@@ -356,13 +356,10 @@ select.form-control {
 
 /* --- AUDIO CONTROLS --- */
 .audio-controls {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
-    padding: 30px 40px 40px 30px;
-    background: $purple;
-    box-shadow: 0 0 50px rgba(darken($purple, 40%), .5);
-    z-index: 10;
+    padding: 10px 20px 20px 10px;
     .btn {
         padding: 10px;
         min-width: 0;
@@ -480,6 +477,15 @@ select.form-control {
 #map {
     height: 680px;
     max-height: 70vh;
+}
+.gm-style-iw {
+    .title {
+        margin-top: .2em;
+        margin-bottom: 0;
+        font-size: 1.4em;
+        font-weight: 700;
+        color: #111;
+    }
 }
 
 /* --- ATTRACTIONS LIST --- */

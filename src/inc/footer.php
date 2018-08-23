@@ -25,12 +25,6 @@
         </footer>
     </div>
 
-    <audio src="/sound/memes.wav" id="bg-music" loop></audio>
-    <audio src="/sound/slow-down-baby.wav" id="cheeky-tune"></audio>
-    <div class="audio-controls">
-        <button class="btn play">&#9658;</button>
-    </div>
-
     <!-- SIGNUP MODAL -->
     <div class="overlay"></div>
     <div class="modal">

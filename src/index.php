@@ -13,6 +13,10 @@ require "./inc/header.php";?>
         <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/gun.svg")?>
         <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/dodgem.svg")?>
         <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/arcade-machine.svg")?>
+        <audio src="/sound/slow-down-baby.wav" id="cheeky-tune"></audio>
+        <div class="audio-controls">
+            <button class="btn play">&#9658;</button>
+        </div>
     </div>
 </div>
 
