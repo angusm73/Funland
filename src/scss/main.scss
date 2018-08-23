@@ -358,8 +358,8 @@ select.form-control {
 .audio-controls {
     position: absolute;
     bottom: 0;
-    left: 0;
-    padding: 10px 20px 20px 10px;
+    right: 0;
+    padding: 0 10px 10px 0;
     .btn {
         padding: 10px;
         min-width: 0;
