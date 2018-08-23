@@ -229,18 +229,12 @@ var FrontEnd = function () {
     }, {
         key: 'initHero',
         value: function initHero() {
-            var items = Array.from(document.querySelectorAll('.hero [data-item]')).map(function (i) {
-                return {
-                    label: i,
-                    item: document.querySelector('.hero .' + i.getAttribute('data-item'))
-                };
-            });
+            var _this3 = this;
+
             // this.shootLaser()
-            // Loop through hero items
-            var i = 0;
-            setInterval(function () {
+            var showSlide = function showSlide(index) {
                 items.forEach(function (item) {
-                    var active = item.item == items[i % items.length].item;
+                    var active = item.item == items[index].item;
                     item.item.style.display = active ? 'block' : 'none';
                     if (active) {
                         item.label.classList.add('active');
@@ -248,6 +242,18 @@ var FrontEnd = function () {
                         item.label.classList.remove('active');
                     }
                 });
+            };
+            var items = Array.from(document.querySelectorAll('.hero [data-item]')).map(function (i, x) {
+                i.addEventListener('mouseenter', showSlide.bind(_this3, x));
+                return {
+                    label: i,
+                    item: document.querySelector('.hero .' + i.getAttribute('data-item'))
+                };
+            });
+            // Loop through hero items
+            var i = 0;
+            setInterval(function () {
+                showSlide(i % items.length);
                 i++;
             }, 3000);
         }

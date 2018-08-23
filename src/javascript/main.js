@@ -219,18 +219,10 @@ class FrontEnd {
     }
 
     initHero() {
-        const items = Array.from(document.querySelectorAll('.hero [data-item]')).map(i => {
-            return {
-                label: i,
-                item: document.querySelector('.hero .' + i.getAttribute('data-item'))
-            }
-        })
         // this.shootLaser()
-        // Loop through hero items
-        let i = 0;
-        setInterval(() => {
+        let showSlide = (index) => {
             items.forEach(item => {
-                const active = item.item == items[i % items.length].item
+                const active = item.item == items[index].item
                 item.item.style.display = active ? 'block' : 'none'
                 if (active) {
                     item.label.classList.add('active')
@@ -238,7 +230,19 @@ class FrontEnd {
                     item.label.classList.remove('active')
                 }
             })
-            i++;
+        }
+        const items = Array.from(document.querySelectorAll('.hero [data-item]')).map((i, x) => {
+            i.addEventListener('mouseenter', showSlide.bind(this, x))
+            return {
+                label: i,
+                item: document.querySelector('.hero .' + i.getAttribute('data-item'))
+            }
+        })
+        // Loop through hero items
+        let i = 0
+        setInterval(() => {
+            showSlide(i % items.length)
+            i++
         }, 3000)
     }
 

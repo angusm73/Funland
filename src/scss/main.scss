@@ -401,6 +401,7 @@ select.form-control {
         line-height: 1;
         span {
             @extend %transition;
+            cursor: default;
             &.active {
                 color: lighten($yellow, 25%);
                 text-shadow: 0 0 30px rgba(darken($yellow, 40%), .8);
