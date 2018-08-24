@@ -9,7 +9,7 @@ require "./inc/header.php";?>
 <div class="sw p-0">
     <div class="hero">
         <h1>3 Levels of <span data-item="arcade-machine">Arcade Fun</span> <br><span data-item="dodgem">Dodgems</span> <br>+ <span data-item="laser-gun" class="active">Laser Tag</span></h1>
-        <button class="btn">Explore</button>
+        <button class="btn" onclick="game.initGame()">Explore</button>
         <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/gun.svg")?>
         <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/dodgem.svg")?>
         <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/arcade-machine.svg")?>

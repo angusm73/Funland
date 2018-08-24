@@ -83,9 +83,10 @@
     </script>
     <?php }?>
 
-    <script src="/js/libs/axios/axios.min.js"></script>
+    <!-- <script src="/js/libs/axios/axios.min.js"></script> -->
     <?php if ($logged_in) {?><script src="/js/admin.js"></script><?php }?>
     <script src="/js/main.js"></script>
+    <script src="/js/game.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=<?=$google_api_key?>&callback=front_end.initMap"
         async defer></script>
 </body>

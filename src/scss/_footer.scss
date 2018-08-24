@@ -5,7 +5,6 @@
     z-index: 1;
 	footer {
         display: flex;
-        margin: 0 -40px;
         padding: 40px;
         background: darken($purple, 10%);
         color: $yellow;
@@ -102,4 +101,10 @@
 		flex: 100%;
 		color: rgba(#FFF, .5);
 	}
+}
+
+@media (min-width: 1281px) {
+    .footer footer {
+        margin: 0 -40px;
+    }
 }

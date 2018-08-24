@@ -3,7 +3,6 @@ class FrontEnd {
     constructor() {
         // this.initModal()
         // this.initModalForm()
-        this.initBackground()
         this.initMusic()
         this.initHero()
     }
@@ -97,50 +96,6 @@ class FrontEnd {
                     .catch(err => console.error(err))
             })
         }
-    }
-
-    initBackground() {
-        let background = document.createElement('div')
-        let shapes = []
-        let distance = (x1, y1, x2, y2) => {
-            return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
-        }
-        let create_shape = () => {
-            let x = Math.random() * 100
-            let y = Math.random() * 100
-            for (let i = 0; i < shapes.length; i++) {
-                const shape = shapes[i];
-                if (distance(shape.x, shape.y, x, y) < 10) {
-                    console.count('fails')
-                    return
-                }
-            }
-
-            let el = document.createElement('span')
-            if (shapes.length < 10) {
-                el.classList.add('squiggle')
-                el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="362" height="42.125" viewBox="0 0 362 42.125"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="10px" fill-rule="evenodd" d="M25,160c10.473-19.526,21.555-33.2,32-32,14.376,1.653,19.472,32,32,32,12.873,0,19.127-32,32-32s19.127,32,32,32,19.127-32,32-32,19.127,32,32,32,19.127-32,32-32,19.127,32,32,32,19.127-32,32-32c12.527,0,17.624,30.347,32,32,10.445,1.2,21.527-12.474,32-32" transform="translate(-20 -122.938)"/></svg>'
-            } else if (shapes.length < 15) {
-                el.classList.add('bubbles')
-            } else if (shapes.length < 40) {
-                el.classList.add('square')
-            } else {
-                el.classList.add('triangle')
-                el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="226" height="199" viewBox="0 0 226 199"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="12px" fill-rule="evenodd" d="M21,235L128,48,235,235H21Z" transform="translate(-15 -42)"/></svg>'
-            }
-            el.style.transform = 'rotate(' + (Math.round(Math.random() * 18) * 20) + 'deg)'
-            el.classList.add('color-' + Math.min(3, Math.floor(Math.random() * 4 + 1)))
-            el.style.left = x + '%'
-            el.style.top = y + '%'
-            background.appendChild(el)
-            shapes.push({ el, x, y })
-        }
-        background.classList.add('background')
-        // Create 100 random shapes
-        while (shapes.length < 60) {
-            create_shape()
-        }
-        document.body.insertBefore(background, document.body.childNodes[0])
     }
 
     initMusic() {
@@ -254,6 +209,22 @@ class FrontEnd {
         laser.style.top = nob_offset.top + 15 + 'px'
         laser.style.left = nob_offset.left + 15 + 'px'
         document.body.appendChild(laser)
+    }
+
+    initGame() {
+        const content = document.querySelectorAll('body > .sw')
+        content.forEach((row, i) => {
+            setTimeout(() => {
+                row.firstElementChild.classList.add('fall')
+            }, i*600)
+        })
+    }
+
+    stopGame() {
+        const content = document.querySelectorAll('body > .sw')
+        content.forEach(row => {
+            row.firstElementChild.classList.remove('fall')
+        })
     }
 }
 

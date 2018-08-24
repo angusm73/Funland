@@ -96,6 +96,9 @@ p {
 }
 .sw {
     @extend %site-width;
+    position: relative;
+    perspective: 1000;
+    perspective-origin: bottom center;
 }
 .swf {
     @extend %site-flex;
@@ -350,6 +353,7 @@ select.form-control {
         color: var(--color);
         svg {
             width: 100%;
+            height: 100%;
         }
     }
 }
@@ -667,6 +671,10 @@ select.form-control {
     animation: laserShoot 4s infinite ease-in;
     z-index: 100;
 }
+.fall {
+    transform-origin: bottom center;
+    animation: fall .6s forwards ease-out;
+}
 
 /* --- ANIMATIONS --- */
 @keyframes laserShoot {
@@ -695,7 +703,6 @@ select.form-control {
     from { transform: translateX(100%) scale(0.6); }
     to { transform: translateX(0) scale(1); }
 }
-
 @keyframes fade-in {
     from {
         opacity: 0;
@@ -718,6 +725,14 @@ select.form-control {
     100% {
         transform: scale(1, 1);
         opacity: 1;
+    }
+}
+@keyframes fall {
+    from {
+        transform: rotateX(0);
+    }
+    to {
+        transform: rotateX(90deg);
     }
 }
 

@@ -5,7 +5,6 @@
     z-index: 1;
 	header {
         display: flex;
-        margin: 0 -40px;
         padding: 40px;
         background: darken($purple, 10%);
         color: $yellow;
@@ -146,6 +145,12 @@
     }
 }
 
+@media (min-width: 1281px) {
+    .header header {
+        margin: 0 -40px;
+    }
+}
+
 @media (max-width: 900px) {
 	.header {
 		header {
@@ -155,7 +160,7 @@
 		.logo {
             min-width: 0;
 		    width: 200px;
-			margin: -50px 0 10px;
+			margin: 0 0 10px;
 		}
 		.cta-wrapper {
 			flex-direction: row;
