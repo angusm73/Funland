@@ -21,9 +21,6 @@ require "./inc/header.php";?>
 </div>
 
 <div class="sw p-0">
-    <!-- <div class="img-wrapper">
-        <img src="/img/home/parties.jpg" alt="Parties">
-    </div> -->
     <div class="cta-row">
         <div class="img-wrapper">
             <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/celebration.svg")?>

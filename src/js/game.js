@@ -16,8 +16,11 @@ var Game = function () {
 
 		this.body_content = document.querySelectorAll('body > .sw');
 		this.gameobjects = [];
+
 		this.initBackground();
 		// this.initGame()
+
+		this.player = new Player();
 	}
 
 	_createClass(Game, [{
@@ -28,15 +31,37 @@ var Game = function () {
 			this.body_content.forEach(function (row, i) {
 				setTimeout(function () {
 					row.firstElementChild.classList.add('fall');
-				}, i * 600);
+				}, i * 0);
 			});
-			setTimeout(function () {
-				_this.sortShapes();
-			}, this.body_content.length * 600);
+			// setTimeout(() => {
+			var header = document.querySelector('.header header');
+			window.scrollTo({
+				top: header.clientHeight,
+				behavior: "smooth"
+			});
+			document.body.style.overflow = 'hidden';
+			this.sortShapes();
+			// }, this.body_content.length * 600)
+
+			var count = 0;
+			var move_distance = 0.2;
+			setInterval(function () {
+				if (count % 30 == 0) {
+					move_distance *= -1;
+				}
+				_this.gameobjects.map(function (i) {
+					return i.x += move_distance;
+				});
+				_this.gameobjects.map(function (i) {
+					return i.render();
+				});
+				count++;
+			}, 100);
 		}
 	}, {
 		key: 'stopGame',
 		value: function stopGame() {
+			document.body.style.overflow = '';
 			this.body_content.forEach(function (row) {
 				row.firstElementChild.classList.remove('fall');
 			});
@@ -99,16 +124,16 @@ var Game = function () {
 				}
 				if (o.shape == 'squiggle') {
 					o.x = col_count / _this3.total_squiggle * 100;
-					o.y = 30;
+					o.y = 10;
 				} else if (o.shape == 'bubbles') {
 					o.x = col_count / _this3.total_bubbles * 100;
-					o.y = 40;
+					o.y = 20;
 				} else if (o.shape == 'square') {
 					o.x = col_count / _this3.total_square * 100;
-					o.y = 50;
+					o.y = 30;
 				} else {
 					o.x = col_count / _this3.total_triangle * 100;
-					o.y = 60;
+					o.y = 40;
 				}
 				o.render();
 				col_count++;
@@ -127,6 +152,7 @@ var GameObject = function () {
 		this.x = x;
 		this.y = y;
 		this.el = element;
+		this.el.style.transition = 'all .5s ease-out';
 		this.shape = shape;
 		this.render();
 	}
@@ -134,17 +160,101 @@ var GameObject = function () {
 	_createClass(GameObject, [{
 		key: 'render',
 		value: function render() {
-			var _this4 = this;
-
-			this.el.style.transition = 'all .5s ease-out';
-			setTimeout(function () {
-				_this4.el.style.left = _this4.x + '%';
-				_this4.el.style.top = _this4.y + '%';
-			}, 10);
+			this.el.style.left = this.x + '%';
+			this.el.style.top = this.y + '%';
 		}
 	}]);
 
 	return GameObject;
+}();
+
+var Player = function () {
+	function Player() {
+		_classCallCheck(this, Player);
+
+		this.moving = 0;
+		this.x = 50;
+		this.y = 95;
+		this.el = document.createElement('span');
+		this.el.classList.add('player');
+		// this.el.style.transition = 'all .1s ease-out'
+		this.init();
+		this.render();
+
+		this.background = document.querySelector('.background');
+		this.background.appendChild(this.el);
+
+		this.bullet_template = document.createElement('span');
+		this.bullet_template.classList.add('bullet');
+	}
+
+	_createClass(Player, [{
+		key: 'init',
+		value: function init() {
+			var _this4 = this;
+
+			document.body.addEventListener('keydown', function (e) {
+				var kc = e.keyCode ? e.keyCode : e.which;
+				if (kc == 37) {
+					_this4.moving = -1;
+				} else if (kc == 39) {
+					_this4.moving = 1;
+				} else if (kc == 32) {
+					_this4.shoot();
+				}
+			});
+			document.body.addEventListener('keyup', function (e) {
+				var kc = e.keyCode ? e.keyCode : e.which;
+				if (kc == 37) {
+					_this4.moving = 0;
+				} else if (kc == 39) {
+					_this4.moving = 0;
+				}
+			});
+			setInterval(function () {
+				_this4.move().render();
+			}, 16);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			this.el.style.left = this.x + '%';
+			this.el.style.top = this.y + '%';
+		}
+	}, {
+		key: 'move',
+		value: function move() {
+			if (this.move === 0) {
+				return this;
+			}
+			this.x += this.moving * 0.5;
+			if (this.x < 0) {
+				this.x = 0;
+			} else if (this.x > 100) {
+				this.x = 100;
+			}
+			return this;
+		}
+	}, {
+		key: 'shoot',
+		value: function shoot() {
+			var bullet = this.bullet_template.cloneNode();
+			bullet.style.left = this.x + '%';
+			bullet.style.top = this.y + '%';
+			this.background.appendChild(bullet);
+			var count = 95;
+			var timer = setInterval(function () {
+				bullet.style.top = count + '%';
+				count--;
+				if (count < 0) {
+					bullet.parentNode.removeChild(bullet);
+					clearInterval(timer);
+				}
+			}, 16);
+		}
+	}]);
+
+	return Player;
 }();
 
 window.game = new Game();

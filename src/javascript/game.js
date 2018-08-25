@@ -9,22 +9,43 @@ class Game {
 
 		this.body_content = document.querySelectorAll('body > .sw')
 		this.gameobjects = []
+
 		this.initBackground()
 		// this.initGame()
+
+		this.player = new Player()
 	}
 
 	initGame() {
 		this.body_content.forEach((row, i) => {
 			setTimeout(() => {
 				row.firstElementChild.classList.add('fall')
-			}, i * 600)
+			}, i * 0)
 		})
-		setTimeout(() => {
-			this.sortShapes()
-		}, this.body_content.length * 600)
+		// setTimeout(() => {
+		let header = document.querySelector('.header header')
+		window.scrollTo({
+			top: header.clientHeight,
+			behavior: "smooth"
+		})
+		document.body.style.overflow = 'hidden'
+		this.sortShapes()
+		// }, this.body_content.length * 600)
+
+		let count = 0
+		let move_distance = 0.2
+		setInterval(() => {
+			if (count % 30 == 0) {
+				move_distance *= -1
+			}
+			this.gameobjects.map(i => i.x += move_distance)
+			this.gameobjects.map(i => i.render())
+			count++
+		}, 100)
 	}
 
 	stopGame() {
+		document.body.style.overflow = ''
 		this.body_content.forEach(row => {
 			row.firstElementChild.classList.remove('fall')
 		})
@@ -74,16 +95,16 @@ class Game {
 			}
 			if (o.shape == 'squiggle') {
 				o.x = col_count / this.total_squiggle * 100
-				o.y = 30
+				o.y = 10
 			} else if (o.shape == 'bubbles') {
 				o.x = col_count / this.total_bubbles * 100
-				o.y = 40
+				o.y = 20
 			} else if (o.shape == 'square') {
 				o.x = col_count / this.total_square * 100
-				o.y = 50
+				o.y = 30
 			} else {
 				o.x = col_count / this.total_triangle * 100
-				o.y = 60
+				o.y = 40
 			}
 			o.render()
 			col_count++
@@ -97,15 +118,86 @@ class GameObject {
 		this.x = x
 		this.y = y
 		this.el = element
+		this.el.style.transition = 'all .5s ease-out'
 		this.shape = shape
 		this.render()
 	}
 	render() {
-		this.el.style.transition = 'all .5s ease-out'
-		setTimeout(() => {
-			this.el.style.left = this.x + '%'
-			this.el.style.top = this.y + '%'
-		}, 10)
+		this.el.style.left = this.x + '%'
+		this.el.style.top = this.y + '%'
+	}
+}
+
+class Player {
+	constructor() {
+		this.moving = 0
+		this.x = 50
+		this.y = 95
+		this.el = document.createElement('span')
+		this.el.classList.add('player')
+		// this.el.style.transition = 'all .1s ease-out'
+		this.init()
+		this.render()
+
+		this.background = document.querySelector('.background')
+		this.background.appendChild(this.el)
+
+		this.bullet_template = document.createElement('span')
+		this.bullet_template.classList.add('bullet')
+	}
+	init() {
+		document.body.addEventListener('keydown', e => {
+			let kc = e.keyCode ? e.keyCode : e.which
+			if (kc == 37) {
+				this.moving = -1
+			} else if (kc == 39) {
+				this.moving = 1
+			} else if (kc == 32) {
+				this.shoot()
+			}
+		})
+		document.body.addEventListener('keyup', e => {
+			let kc = e.keyCode ? e.keyCode : e.which
+			if (kc == 37) {
+				this.moving = 0
+			} else if (kc == 39) {
+				this.moving = 0
+			}
+		})
+		setInterval(() => {
+			this.move().render()
+		}, 16)
+	}
+	render() {
+		this.el.style.left = this.x + '%'
+		this.el.style.top = this.y + '%'
+	}
+	move() {
+		if (this.move === 0) {
+			return this
+		}
+		this.x += this.moving * 0.5
+		if (this.x < 0) {
+			this.x = 0
+		} else if (this.x > 100) {
+			this.x = 100
+		}
+		return this
+	}
+	shoot() {
+		let bullet = this.bullet_template.cloneNode()
+		bullet.style.left = this.x + '%'
+		bullet.style.top = this.y + '%'
+		this.background.appendChild(bullet)
+		let count = 95
+		let timer = setInterval(() => {
+			bullet.style.top = count + '%';
+			count--
+			if (count < 0) {
+				bullet.parentNode.removeChild(bullet)
+				clearInterval(timer)
+			}
+		}, 16)
 	}
 }
 
