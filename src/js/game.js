@@ -18,7 +18,7 @@ var Game = function () {
 		this.gameobjects = [];
 
 		this.initBackground();
-		// this.initGame()
+		this.initGame();
 
 		this.player = new Player();
 	}
@@ -160,8 +160,8 @@ var GameObject = function () {
 	_createClass(GameObject, [{
 		key: 'render',
 		value: function render() {
-			this.el.style.left = this.x + '%';
-			this.el.style.top = this.y + '%';
+			this.el.style.transform = 'translate(' + this.x + 'vw, ' + (100 - this.y) * -1 + 'vh)';
+			this.el.style.webkitTransform = 'translate(' + this.x + 'vw, ' + (100 - this.y) * -1 + 'vh)';
 		}
 	}]);
 
@@ -177,7 +177,7 @@ var Player = function () {
 		this.y = 95;
 		this.el = document.createElement('span');
 		this.el.classList.add('player');
-		// this.el.style.transition = 'all .1s ease-out'
+		this.el.style.transition = 'all .05s ease-out';
 		this.init();
 		this.render();
 
@@ -218,8 +218,8 @@ var Player = function () {
 	}, {
 		key: 'render',
 		value: function render() {
-			this.el.style.left = this.x + '%';
-			this.el.style.top = this.y + '%';
+			this.el.style.transform = 'translate(' + this.x + 'vw, ' + (100 - this.y) * -1 + 'vh)';
+			this.el.style.webkitTransform = 'translate(' + this.x + 'vw, ' + (100 - this.y) * -1 + 'vh)';
 		}
 	}, {
 		key: 'move',

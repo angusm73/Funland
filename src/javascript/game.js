@@ -11,7 +11,7 @@ class Game {
 		this.gameobjects = []
 
 		this.initBackground()
-		// this.initGame()
+		this.initGame()
 
 		this.player = new Player()
 	}
@@ -123,8 +123,8 @@ class GameObject {
 		this.render()
 	}
 	render() {
-		this.el.style.left = this.x + '%'
-		this.el.style.top = this.y + '%'
+		this.el.style.transform = `translate(${this.x}vw, ${(100 - this.y) * -1}vh)`
+		this.el.style.webkitTransform = `translate(${this.x}vw, ${(100 - this.y) * -1}vh)`
 	}
 }
 
@@ -135,7 +135,7 @@ class Player {
 		this.y = 95
 		this.el = document.createElement('span')
 		this.el.classList.add('player')
-		// this.el.style.transition = 'all .1s ease-out'
+		this.el.style.transition = 'all .05s ease-out'
 		this.init()
 		this.render()
 
@@ -169,8 +169,8 @@ class Player {
 		}, 16)
 	}
 	render() {
-		this.el.style.left = this.x + '%'
-		this.el.style.top = this.y + '%'
+		this.el.style.transform = `translate(${this.x}vw, ${(100 - this.y) * -1}vh)`
+		this.el.style.webkitTransform = `translate(${this.x}vw, ${(100 - this.y) * -1}vh)`
 	}
 	move() {
 		if (this.move === 0) {
