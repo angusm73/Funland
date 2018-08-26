@@ -18,7 +18,7 @@ var Game = function () {
 		this.gameobjects = [];
 
 		this.initBackground();
-		this.initGame();
+		// this.initGame()
 
 		this.player = new Player();
 	}
@@ -43,7 +43,8 @@ var Game = function () {
 			this.sortShapes();
 			// }, this.body_content.length * 600)
 
-			var count = 0;
+			// Move enemies left & right
+			var count = -15;
 			var move_distance = 0.2;
 			setInterval(function () {
 				if (count % 30 == 0) {

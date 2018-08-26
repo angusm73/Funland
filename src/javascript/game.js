@@ -11,7 +11,7 @@ class Game {
 		this.gameobjects = []
 
 		this.initBackground()
-		this.initGame()
+		// this.initGame()
 
 		this.player = new Player()
 	}
@@ -32,7 +32,8 @@ class Game {
 		this.sortShapes()
 		// }, this.body_content.length * 600)
 
-		let count = 0
+		// Move enemies left & right
+		let count = -15
 		let move_distance = 0.2
 		setInterval(() => {
 			if (count % 30 == 0) {

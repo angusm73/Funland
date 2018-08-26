@@ -11,7 +11,7 @@
 		bottom: 0;
     }
     .color-1 {
-        --color: #501358;
+        --color: #CE3488;
     }
     .color-2 {
         --color: #EAB835;
@@ -20,6 +20,7 @@
         --color: #1FCCBE;
     }
     .squiggle {
+		margin: -5px -40px;
         width: 80px;
         height: 10px;
         color: var(--color);
@@ -28,6 +29,7 @@
         }
     }
     .bubbles {
+		margin: -5px -15px;
         width: 10px;
         height: 10px;
         border: 2px solid var(--color);
@@ -50,11 +52,13 @@
         }
     }
     .square {
+		margin: -5px;
         width: 10px;
         height: 10px;
         background: var(--color);
     }
     .triangle {
+		margin: -10px;
         width: 20px;
         height: 20px;
         color: var(--color);
