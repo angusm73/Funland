@@ -38,6 +38,7 @@ class Game {
 		setInterval(() => {
 			if (count % 30 == 0) {
 				move_distance *= -1
+				this.gameobjects.map(i => i.y += 5)
 			}
 			this.gameobjects.map(i => i.x += move_distance)
 			this.gameobjects.map(i => i.render())

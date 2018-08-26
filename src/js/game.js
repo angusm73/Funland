@@ -49,6 +49,9 @@ var Game = function () {
 			setInterval(function () {
 				if (count % 30 == 0) {
 					move_distance *= -1;
+					_this.gameobjects.map(function (i) {
+						return i.y += 5;
+					});
 				}
 				_this.gameobjects.map(function (i) {
 					return i.x += move_distance;
