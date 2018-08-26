@@ -20,18 +20,18 @@ class Game {
 		this.body_content.forEach((row, i) => {
 			setTimeout(() => {
 				row.firstElementChild.classList.add('fall')
-			}, i * 0)
+			}, i * 600)
 		})
-		// setTimeout(() => {
-		let header = document.querySelector('.header header')
-		window.scrollTo({
-			top: header.clientHeight,
-			behavior: "smooth"
-		})
-		document.body.style.overflow = 'hidden'
-		document.body.addEventListener("touchmove", this._preventScroll, false);
-		this.sortShapes()
-		// }, this.body_content.length * 600)
+		setTimeout(() => {
+			let header = document.querySelector('.header header')
+			window.scrollTo({
+				top: header.clientHeight,
+				behavior: "smooth"
+			})
+			document.body.style.overflow = 'hidden'
+			document.body.addEventListener("touchmove", this._preventScroll, false);
+			this.sortShapes()
+		}, this.body_content.length * 600)
 
 		// Move enemies left & right
 		let count = -15
