@@ -29,6 +29,7 @@ class Game {
 			behavior: "smooth"
 		})
 		document.body.style.overflow = 'hidden'
+		document.body.addEventListener("touchmove", this._preventScroll, false);
 		this.sortShapes()
 		// }, this.body_content.length * 600)
 
@@ -48,9 +49,15 @@ class Game {
 
 	stopGame() {
 		document.body.style.overflow = ''
+		document.body.removeEventListener("touchmove", this._preventScroll, false);
 		this.body_content.forEach(row => {
 			row.firstElementChild.classList.remove('fall')
 		})
+	}
+
+	_preventScroll(e) {
+		e.preventDefault()
+		e.stopPropagation()
 	}
 
 	initBackground() {

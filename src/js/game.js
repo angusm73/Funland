@@ -40,6 +40,7 @@ var Game = function () {
 				behavior: "smooth"
 			});
 			document.body.style.overflow = 'hidden';
+			document.body.addEventListener("touchmove", this._preventScroll, false);
 			this.sortShapes();
 			// }, this.body_content.length * 600)
 
@@ -66,9 +67,16 @@ var Game = function () {
 		key: 'stopGame',
 		value: function stopGame() {
 			document.body.style.overflow = '';
+			document.body.removeEventListener("touchmove", this._preventScroll, false);
 			this.body_content.forEach(function (row) {
 				row.firstElementChild.classList.remove('fall');
 			});
+		}
+	}, {
+		key: '_preventScroll',
+		value: function _preventScroll(e) {
+			e.preventDefault();
+			e.stopPropagation();
 		}
 	}, {
 		key: 'initBackground',
