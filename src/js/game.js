@@ -42,26 +42,26 @@ var Game = function () {
 				document.body.style.overflow = 'hidden';
 				document.body.addEventListener("touchmove", _this._preventScroll, false);
 				_this.sortShapes();
-			}, this.body_content.length * 600);
 
-			// Move enemies left & right
-			var count = -15;
-			var move_distance = 0.2;
-			setInterval(function () {
-				if (count % 30 == 0) {
-					move_distance *= -1;
+				// Move enemies left & right
+				var count = -15;
+				var move_distance = 0.2;
+				setInterval(function () {
+					if (count % 30 == 0) {
+						move_distance *= -1;
+						_this.gameobjects.map(function (i) {
+							return i.y += 5;
+						});
+					}
 					_this.gameobjects.map(function (i) {
-						return i.y += 5;
+						return i.x += move_distance;
 					});
-				}
-				_this.gameobjects.map(function (i) {
-					return i.x += move_distance;
-				});
-				_this.gameobjects.map(function (i) {
-					return i.render();
-				});
-				count++;
-			}, 100);
+					_this.gameobjects.map(function (i) {
+						return i.render();
+					});
+					count++;
+				}, 100);
+			}, this.body_content.length * 600);
 		}
 	}, {
 		key: 'stopGame',

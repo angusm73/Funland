@@ -31,20 +31,20 @@ class Game {
 			document.body.style.overflow = 'hidden'
 			document.body.addEventListener("touchmove", this._preventScroll, false);
 			this.sortShapes()
-		}, this.body_content.length * 600)
 
-		// Move enemies left & right
-		let count = -15
-		let move_distance = 0.2
-		setInterval(() => {
-			if (count % 30 == 0) {
-				move_distance *= -1
-				this.gameobjects.map(i => i.y += 5)
-			}
-			this.gameobjects.map(i => i.x += move_distance)
-			this.gameobjects.map(i => i.render())
-			count++
-		}, 100)
+			// Move enemies left & right
+			let count = -15
+			let move_distance = 0.2
+			setInterval(() => {
+				if (count % 30 == 0) {
+					move_distance *= -1
+					this.gameobjects.map(i => i.y += 5)
+				}
+				this.gameobjects.map(i => i.x += move_distance)
+				this.gameobjects.map(i => i.render())
+				count++
+			}, 100)
+		}, this.body_content.length * 600)
 	}
 
 	stopGame() {
