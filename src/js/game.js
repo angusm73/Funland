@@ -30,44 +30,54 @@ var Game = function () {
 	_createClass(Game, [{
 		key: 'initGame',
 		value: function initGame() {
-			var _this = this;
-
 			this.body_content.forEach(function (row, i) {
 				setTimeout(function () {
 					row.firstElementChild.classList.add('fall');
 				}, i * 600);
 			});
-			setTimeout(function () {
-				var header = document.querySelector('.header header');
-				window.scrollTo({
-					top: header.clientHeight,
-					behavior: "smooth"
-				});
-				document.body.style.overflow = 'hidden';
-				document.body.addEventListener("touchmove", _this._preventScroll, false);
-				_this.sortShapes();
+			setTimeout(this.startGame.bind(this), this.body_content.length * 600);
+		}
+	}, {
+		key: 'startGame',
+		value: function startGame() {
+			var _this = this;
 
-				// Move enemies left & right
-				var count = -15;
-				var move_distance = 0.2;
-				setInterval(function () {
-					if (count % 30 == 0) {
-						move_distance *= -1;
-						if (count < 300) {
-							_this.gameobjects.map(function (i) {
-								return i.y += 5;
-							});
-						}
+			var header = document.querySelector('.header header');
+			window.scrollTo({
+				top: header.clientHeight,
+				behavior: "smooth"
+			});
+			document.body.style.overflow = 'hidden';
+			document.body.addEventListener("touchmove", this._preventScroll, false);
+			this.sortShapes();
+
+			// Move enemies left & right
+			var count = -15;
+			var move_distance = 0.2;
+			this.game_timer = setInterval(function () {
+				if (count % 30 == 0) {
+					move_distance *= -1;
+					if (count < 300) {
+						_this.gameobjects.map(function (i) {
+							return i.y += 5;
+						});
 					}
-					_this.gameobjects.map(function (i) {
-						return i.x += move_distance;
-					});
-					_this.gameobjects.map(function (i) {
-						return i.render();
-					});
-					count++;
-				}, 150);
-			}, this.body_content.length * 600);
+				}
+				_this.gameobjects.map(function (i) {
+					return i.x += move_distance;
+				});
+				_this.gameobjects.map(function (i) {
+					return i.render();
+				});
+				count++;
+			}, 150);
+
+			document.body.addEventListener('keydown', function (e) {
+				var kc = e.keyCode ? e.keyCode : e.which;
+				if (kc == 27) {
+					_this.stopGame();
+				}
+			});
 		}
 	}, {
 		key: 'stopGame',
@@ -77,6 +87,12 @@ var Game = function () {
 			this.body_content.forEach(function (row) {
 				row.firstElementChild.classList.remove('fall');
 			});
+			clearInterval(this.game_timer);
+			this.gameobjects.map(function (o) {
+				return o.destroy();
+			});
+			this.gameobjects = [];
+			this.initBackground();
 		}
 	}, {
 		key: '_preventScroll',

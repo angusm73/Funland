@@ -22,31 +22,40 @@ class Game {
 				row.firstElementChild.classList.add('fall')
 			}, i * 600)
 		})
-		setTimeout(() => {
-			let header = document.querySelector('.header header')
-			window.scrollTo({
-				top: header.clientHeight,
-				behavior: "smooth"
-			})
-			document.body.style.overflow = 'hidden'
-			document.body.addEventListener("touchmove", this._preventScroll, false);
-			this.sortShapes()
+		setTimeout(this.startGame.bind(this), this.body_content.length * 600)
+	}
 
-			// Move enemies left & right
-			let count = -15
-			let move_distance = 0.2
-			setInterval(() => {
-				if (count % 30 == 0) {
-					move_distance *= -1
-					if (count < 300) {
-						this.gameobjects.map(i => i.y += 5)
-					}
+	startGame() {
+		let header = document.querySelector('.header header')
+		window.scrollTo({
+			top: header.clientHeight,
+			behavior: "smooth"
+		})
+		document.body.style.overflow = 'hidden'
+		document.body.addEventListener("touchmove", this._preventScroll, false);
+		this.sortShapes()
+
+		// Move enemies left & right
+		let count = -15
+		let move_distance = 0.2
+		this.game_timer = setInterval(() => {
+			if (count % 30 == 0) {
+				move_distance *= -1
+				if (count < 300) {
+					this.gameobjects.map(i => i.y += 5)
 				}
-				this.gameobjects.map(i => i.x += move_distance)
-				this.gameobjects.map(i => i.render())
-				count++
-			}, 150)
-		}, this.body_content.length * 600)
+			}
+			this.gameobjects.map(i => i.x += move_distance)
+			this.gameobjects.map(i => i.render())
+			count++
+		}, 150)
+
+		document.body.addEventListener('keydown', e => {
+			let kc = e.keyCode ? e.keyCode : e.which
+			if (kc == 27) {
+				this.stopGame()
+			}
+		})
 	}
 
 	stopGame() {
@@ -55,6 +64,10 @@ class Game {
 		this.body_content.forEach(row => {
 			row.firstElementChild.classList.remove('fall')
 		})
+		clearInterval(this.game_timer)
+		this.gameobjects.map(o => o.destroy())
+		this.gameobjects = []
+		this.initBackground()
 	}
 
 	_preventScroll(e) {
