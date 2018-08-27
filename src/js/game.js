@@ -48,7 +48,6 @@ var Game = function () {
 				behavior: "smooth"
 			});
 			document.body.style.overflow = 'hidden';
-			document.body.addEventListener("touchmove", this._preventScroll, false);
 			this.sortShapes();
 
 			// Move enemies left & right
@@ -78,6 +77,9 @@ var Game = function () {
 					_this.stopGame();
 				}
 			});
+
+			var background = document.querySelector('.background');
+			background.classList.add('active');
 		}
 	}, {
 		key: 'stopGame',
@@ -93,12 +95,8 @@ var Game = function () {
 			});
 			this.gameobjects = [];
 			this.initBackground();
-		}
-	}, {
-		key: '_preventScroll',
-		value: function _preventScroll(e) {
-			e.preventDefault();
-			e.stopPropagation();
+			var background = document.querySelector('.background');
+			background.classList.remove('active');
 		}
 	}, {
 		key: 'initBackground',
@@ -222,11 +220,11 @@ var Player = function (_GameObject) {
 		_this4.moving = 0;
 		_this4.el.style.transition = 'all .05s ease-out';
 
-		_this4.init();
-		_this4.render();
-
 		_this4.background = document.querySelector('.background');
 		_this4.background.appendChild(_this4.el);
+
+		_this4.init();
+		_this4.render();
 
 		_this4.bullets = [];
 		return _this4;
@@ -237,16 +235,20 @@ var Player = function (_GameObject) {
 		value: function init() {
 			var _this5 = this;
 
-			document.body.addEventListener("touchstart", this.touchStart.bind(this), false);
-			document.body.addEventListener("touchend", this.touchEnd.bind(this), false);
+			this.background.addEventListener("touchstart", this.touchMove.bind(this), false);
+			this.background.addEventListener("touchmove", this.touchMove.bind(this), false);
+			this.background.addEventListener("touchend", this.touchEnd.bind(this), false);
 			document.body.addEventListener('keydown', function (e) {
 				var kc = e.keyCode ? e.keyCode : e.which;
 				if (kc == 37) {
 					_this5.moving = -1;
+					return false;
 				} else if (kc == 39) {
 					_this5.moving = 1;
+					return false;
 				} else if (kc == 32) {
 					_this5.shoot();
+					return false;
 				}
 			});
 			document.body.addEventListener('keyup', function (e) {
@@ -286,8 +288,8 @@ var Player = function (_GameObject) {
 			this.bullets.push(bullet);
 		}
 	}, {
-		key: 'touchStart',
-		value: function touchStart(e) {
+		key: 'touchMove',
+		value: function touchMove(e) {
 			for (var i = 0; i < e.targetTouches.length; i++) {
 				var target = e.targetTouches[i];
 				if (target.clientY < window.innerHeight * 0.8) {
