@@ -32,7 +32,7 @@ class Game {
 			behavior: "smooth"
 		})
 		document.body.style.overflow = 'hidden'
-		document.body.addEventListener("touchmove", this._preventScroll, false);
+		document.body.addEventListener("touchmove", this._preventScroll, false)
 		this.sortShapes()
 
 		// Move enemies left & right
@@ -174,6 +174,8 @@ class Player extends GameObject {
 		this.bullets = []
 	}
 	init() {
+		document.body.addEventListener("touchstart", this.touchStart.bind(this), false)
+		document.body.addEventListener("touchend", this.touchEnd.bind(this), false)
 		document.body.addEventListener('keydown', e => {
 			let kc = e.keyCode ? e.keyCode : e.which
 			if (kc == 37) {
@@ -213,6 +215,28 @@ class Player extends GameObject {
 		let bullet = new Bullet(this.x, this.y)
 		this.background.appendChild(bullet.el)
 		this.bullets.push(bullet)
+	}
+	touchStart(e) {
+		for (let i = 0; i < e.targetTouches.length; i++) {
+			const target = e.targetTouches[i]
+			if (target.clientY < window.innerHeight * 0.8) {
+				this.shoot()
+			} else {
+				if (target.clientX < window.innerWidth * 0.5) {
+					this.moving = -1
+				} else {
+					this.moving = 1
+				}
+			}
+		}
+	}
+	touchEnd(e) {
+		for (let i = 0; i < e.changedTouches.length; i++) {
+			const target = e.changedTouches[i]
+			if (target.clientY > window.innerHeight * 0.8) {
+				this.moving = 0
+			}
+		}
 	}
 }
 
