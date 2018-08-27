@@ -229,6 +229,8 @@ class Player extends GameObject {
 				}
 			}
 		}
+		e.preventDefault()
+		e.stopPropagation()
 	}
 	touchEnd(e) {
 		for (let i = 0; i < e.changedTouches.length; i++) {

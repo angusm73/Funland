@@ -300,6 +300,8 @@ var Player = function (_GameObject) {
 					}
 				}
 			}
+			e.preventDefault();
+			e.stopPropagation();
 		}
 	}, {
 		key: 'touchEnd',
