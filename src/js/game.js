@@ -2,6 +2,10 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Game = function () {
@@ -18,7 +22,7 @@ var Game = function () {
 		this.gameobjects = [];
 
 		this.initBackground();
-		this.initGame();
+		// this.initGame()
 
 		this.player = new Player();
 	}
@@ -62,7 +66,7 @@ var Game = function () {
 						return i.render();
 					});
 					count++;
-				}, 100);
+				}, 150);
 			}, this.body_content.length * 600);
 		}
 	}, {
@@ -166,12 +170,21 @@ var GameObject = function () {
 		this.x = x;
 		this.y = y;
 		this.el = element;
-		this.el.style.transition = 'all .5s ease-out';
+		this.el.style.transition = 'all .2s ease-out';
+		this.el.classList.add('shape');
+		this.el.classList.add(shape);
 		this.shape = shape;
 		this.render();
 	}
 
 	_createClass(GameObject, [{
+		key: 'destroy',
+		value: function destroy() {
+			if (this.el.parentNode) {
+				this.el.parentNode.removeChild(this.el);
+			}
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			this.el.style.transform = 'translate(' + this.x + 'vw, ' + (100 - this.y) * -1 + 'vh)';
@@ -182,58 +195,56 @@ var GameObject = function () {
 	return GameObject;
 }();
 
-var Player = function () {
+var Player = function (_GameObject) {
+	_inherits(Player, _GameObject);
+
 	function Player() {
 		_classCallCheck(this, Player);
 
-		this.moving = 0;
-		this.x = 50;
-		this.y = 95;
-		this.el = document.createElement('span');
-		this.el.classList.add('player');
-		this.el.style.transition = 'all .05s ease-out';
-		this.init();
-		this.render();
+		var _this4 = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, 50, 95, document.createElement('span'), 'player'));
 
-		this.background = document.querySelector('.background');
-		this.background.appendChild(this.el);
+		_this4.moving = 0;
+		_this4.el.style.transition = 'all .05s ease-out';
 
-		this.bullet_template = document.createElement('span');
-		this.bullet_template.classList.add('bullet');
+		_this4.init();
+		_this4.render();
+
+		_this4.background = document.querySelector('.background');
+		_this4.background.appendChild(_this4.el);
+
+		_this4.bullets = [];
+		return _this4;
 	}
 
 	_createClass(Player, [{
 		key: 'init',
 		value: function init() {
-			var _this4 = this;
+			var _this5 = this;
 
 			document.body.addEventListener('keydown', function (e) {
 				var kc = e.keyCode ? e.keyCode : e.which;
 				if (kc == 37) {
-					_this4.moving = -1;
+					_this5.moving = -1;
 				} else if (kc == 39) {
-					_this4.moving = 1;
+					_this5.moving = 1;
 				} else if (kc == 32) {
-					_this4.shoot();
+					_this5.shoot();
 				}
 			});
 			document.body.addEventListener('keyup', function (e) {
 				var kc = e.keyCode ? e.keyCode : e.which;
 				if (kc == 37) {
-					_this4.moving = 0;
+					_this5.moving = 0;
 				} else if (kc == 39) {
-					_this4.moving = 0;
+					_this5.moving = 0;
 				}
 			});
 			setInterval(function () {
-				_this4.move().render();
+				_this5.move().render();
+				_this5.bullets.map(function (b) {
+					return b.render();
+				});
 			}, 16);
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			this.el.style.transform = 'translate(' + this.x + 'vw, ' + (100 - this.y) * -1 + 'vh)';
-			this.el.style.webkitTransform = 'translate(' + this.x + 'vw, ' + (100 - this.y) * -1 + 'vh)';
 		}
 	}, {
 		key: 'move',
@@ -252,24 +263,60 @@ var Player = function () {
 	}, {
 		key: 'shoot',
 		value: function shoot() {
-			var bullet = this.bullet_template.cloneNode();
-			bullet.style.left = this.x + '%';
-			bullet.style.top = this.y + '%';
-			this.background.appendChild(bullet);
-			var count = 95;
-			var timer = setInterval(function () {
-				bullet.style.top = count + '%';
-				count--;
-				if (count < 0) {
-					bullet.parentNode.removeChild(bullet);
-					clearInterval(timer);
-				}
-			}, 16);
+			var bullet = new Bullet(this.x, this.y);
+			this.background.appendChild(bullet.el);
+			this.bullets.push(bullet);
 		}
 	}]);
 
 	return Player;
-}();
+}(GameObject);
+
+var Bullet = function (_GameObject2) {
+	_inherits(Bullet, _GameObject2);
+
+	function Bullet(x, y) {
+		_classCallCheck(this, Bullet);
+
+		var _this6 = _possibleConstructorReturn(this, (Bullet.__proto__ || Object.getPrototypeOf(Bullet)).call(this, x, y, document.createElement('span'), 'bullet'));
+
+		_this6.move();
+		return _this6;
+	}
+
+	_createClass(Bullet, [{
+		key: 'move',
+		value: function move() {
+			var _this7 = this;
+
+			var timer = setInterval(function () {
+				_this7.y -= 0.5;
+				if (_this7.y < 0 || _this7.checkCollisions()) {
+					clearInterval(timer);
+					_this7.destroy();
+				}
+			}, 16);
+			return this;
+		}
+	}, {
+		key: 'checkCollisions',
+		value: function checkCollisions() {
+			var _this8 = this;
+
+			var colliding = game.gameobjects.filter(function (o) {
+				return o.x > _this8.x - 1 && o.x < _this8.x + 1 && o.y > _this8.y - 0.5 && o.y < _this8.y + 0.5;
+			});
+			colliding.map(function (o) {
+				return o.destroy();
+			});
+			game.gameobjects = game.gameobjects.filter(function (o) {
+				return !(o.x > _this8.x - 1 && o.x < _this8.x + 1 && o.y > _this8.y - 0.5 && o.y < _this8.y + 0.5);
+			});
+		}
+	}]);
+
+	return Bullet;
+}(GameObject);
 
 window.game = new Game();
 //# sourceMappingURL=game.js.map

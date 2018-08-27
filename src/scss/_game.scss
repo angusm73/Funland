@@ -18,7 +18,10 @@
     }
     .color-3 {
         --color: #1FCCBE;
-    }
+	}
+	.test {
+		--color: #F00!important;
+	}
     .squiggle {
 		margin: -5px -40px;
         width: 80px;

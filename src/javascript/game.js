@@ -11,7 +11,7 @@ class Game {
 		this.gameobjects = []
 
 		this.initBackground()
-		this.initGame()
+		// this.initGame()
 
 		this.player = new Player()
 	}
@@ -45,7 +45,7 @@ class Game {
 				this.gameobjects.map(i => i.x += move_distance)
 				this.gameobjects.map(i => i.render())
 				count++
-			}, 100)
+			}, 150)
 		}, this.body_content.length * 600)
 	}
 
@@ -129,9 +129,16 @@ class GameObject {
 		this.x = x
 		this.y = y
 		this.el = element
-		this.el.style.transition = 'all .5s ease-out'
+		this.el.style.transition = 'all .2s ease-out'
+		this.el.classList.add('shape')
+		this.el.classList.add(shape)
 		this.shape = shape
 		this.render()
+	}
+	destroy() {
+		if (this.el.parentNode) {
+			this.el.parentNode.removeChild(this.el)
+		}
 	}
 	render() {
 		this.el.style.transform = `translate(${this.x}vw, ${(100 - this.y) * -1}vh)`
@@ -139,22 +146,19 @@ class GameObject {
 	}
 }
 
-class Player {
+class Player extends GameObject {
 	constructor() {
+		super(50, 95, document.createElement('span'), 'player')
 		this.moving = 0
-		this.x = 50
-		this.y = 95
-		this.el = document.createElement('span')
-		this.el.classList.add('player')
 		this.el.style.transition = 'all .05s ease-out'
+
 		this.init()
 		this.render()
 
 		this.background = document.querySelector('.background')
 		this.background.appendChild(this.el)
 
-		this.bullet_template = document.createElement('span')
-		this.bullet_template.classList.add('bullet')
+		this.bullets = []
 	}
 	init() {
 		document.body.addEventListener('keydown', e => {
@@ -177,11 +181,8 @@ class Player {
 		})
 		setInterval(() => {
 			this.move().render()
+			this.bullets.map(b => b.render())
 		}, 16)
-	}
-	render() {
-		this.el.style.transform = `translate(${this.x}vw, ${(100 - this.y) * -1}vh)`
-		this.el.style.webkitTransform = `translate(${this.x}vw, ${(100 - this.y) * -1}vh)`
 	}
 	move() {
 		if (this.move === 0) {
@@ -196,19 +197,35 @@ class Player {
 		return this
 	}
 	shoot() {
-		let bullet = this.bullet_template.cloneNode()
-		bullet.style.left = this.x + '%'
-		bullet.style.top = this.y + '%'
-		this.background.appendChild(bullet)
-		let count = 95
+		let bullet = new Bullet(this.x, this.y)
+		this.background.appendChild(bullet.el)
+		this.bullets.push(bullet)
+	}
+}
+
+class Bullet extends GameObject {
+	constructor(x, y) {
+		super(x, y, document.createElement('span'), 'bullet')
+		this.move()
+	}
+	move() {
 		let timer = setInterval(() => {
-			bullet.style.top = count + '%';
-			count--
-			if (count < 0) {
-				bullet.parentNode.removeChild(bullet)
+			this.y -= 0.5
+			if (this.y < 0 || this.checkCollisions()) {
 				clearInterval(timer)
+				this.destroy()
 			}
 		}, 16)
+		return this
+	}
+	checkCollisions() {
+		const colliding = game.gameobjects.filter(o => {
+			return o.x > this.x - 1 && o.x < this.x + 1 && o.y > this.y - 0.5 && o.y < this.y + 0.5
+		})
+		colliding.map(o => o.destroy())
+		game.gameobjects = game.gameobjects.filter(o => {
+			return !(o.x > this.x - 1 && o.x < this.x + 1 && o.y > this.y - 0.5 && o.y < this.y + 0.5)
+		})
 	}
 }
 
