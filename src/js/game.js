@@ -193,8 +193,12 @@ var Game = function () {
 			this.shoot_sound = document.createElement('audio');
 			this.shoot_sound.id = 'shoot';
 			this.shoot_sound.src = '/sound/shoot.wav';
+			this.death_sound = document.createElement('audio');
+			this.death_sound.id = 'death';
+			this.death_sound.src = '/sound/explosion.wav';
 			if (this.background) {
 				this.background.appendChild(this.shoot_sound);
+				this.background.appendChild(this.death_sound);
 			}
 		}
 	}, {
@@ -298,6 +302,8 @@ var Enemy = function (_GameObject) {
 		key: 'destroy',
 		value: function destroy() {
 			_get(Enemy.prototype.__proto__ || Object.getPrototypeOf(Enemy.prototype), 'destroy', this).call(this);
+			game.death_sound.currentTime = 0;
+			game.death_sound.play();
 			game.score += this.shape == 'square' ? 10 : this.shape == 'triangle' ? 5 : 1;
 			game.renderScore();
 		}
