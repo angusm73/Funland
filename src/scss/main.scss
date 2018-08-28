@@ -362,6 +362,25 @@ select.form-control {
             fill: #4B3909;
         }
     }
+    @media (min-width: 701px) and (max-width: 1000px) {
+        padding-bottom: 160px;
+    }
+    @media (min-width: 501px) and (max-width: 700px) {
+        padding-top: $pad;
+        padding-bottom: $pad*2;
+        svg {
+            width: 200px;
+            height: 200px;
+        }
+    }
+    @media (max-width: 500px) {
+        padding-top: $mobile-pad;
+        padding-bottom: 240px;
+        svg {
+            width: 160px;
+            height: 160px;
+        }
+    }
 }
 
 /* --- CTA ROW --- */
