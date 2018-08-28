@@ -174,7 +174,17 @@ class FrontEnd {
     }
 
     initHero() {
-        // this.shootLaser()
+        let slide_counter = 0
+        let timer
+        let start_timer = () => {
+            timer = setInterval(() => {
+                showSlide(slide_counter % items.length)
+                slide_counter++
+            }, 3000)
+        }
+        let stop_timer = () => {
+            clearInterval(timer)
+        }
         let showSlide = (index) => {
             items.forEach(item => {
                 const active = item.item == items[index].item
@@ -187,18 +197,18 @@ class FrontEnd {
             })
         }
         const items = Array.from(document.querySelectorAll('.hero [data-item]')).map((i, x) => {
-            i.addEventListener('mouseenter', showSlide.bind(this, x))
+            i.addEventListener('mouseenter', () => {
+                stop_timer()
+                showSlide.call(this, x)
+                slide_counter = x + 1
+            })
+            i.addEventListener('mouseleave', start_timer)
             return {
                 label: i,
                 item: document.querySelector('.hero .' + i.getAttribute('data-item'))
             }
         })
-        // Loop through hero items
-        let i = 0
-        setInterval(() => {
-            showSlide(i % items.length)
-            i++
-        }, 3000)
+        start_timer()
     }
 
     shootLaser() {
@@ -216,7 +226,7 @@ class FrontEnd {
         content.forEach((row, i) => {
             setTimeout(() => {
                 row.firstElementChild.classList.add('fall')
-            }, i*600)
+            }, i * 600)
         })
     }
 

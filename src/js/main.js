@@ -185,7 +185,17 @@ var FrontEnd = function () {
         value: function initHero() {
             var _this3 = this;
 
-            // this.shootLaser()
+            var slide_counter = 0;
+            var timer = void 0;
+            var start_timer = function start_timer() {
+                timer = setInterval(function () {
+                    showSlide(slide_counter % items.length);
+                    slide_counter++;
+                }, 3000);
+            };
+            var stop_timer = function stop_timer() {
+                clearInterval(timer);
+            };
             var showSlide = function showSlide(index) {
                 items.forEach(function (item) {
                     var active = item.item == items[index].item;
@@ -198,18 +208,18 @@ var FrontEnd = function () {
                 });
             };
             var items = Array.from(document.querySelectorAll('.hero [data-item]')).map(function (i, x) {
-                i.addEventListener('mouseenter', showSlide.bind(_this3, x));
+                i.addEventListener('mouseenter', function () {
+                    stop_timer();
+                    showSlide.call(_this3, x);
+                    slide_counter = x + 1;
+                });
+                i.addEventListener('mouseleave', start_timer);
                 return {
                     label: i,
                     item: document.querySelector('.hero .' + i.getAttribute('data-item'))
                 };
             });
-            // Loop through hero items
-            var i = 0;
-            setInterval(function () {
-                showSlide(i % items.length);
-                i++;
-            }, 3000);
+            start_timer();
         }
     }, {
         key: 'shootLaser',

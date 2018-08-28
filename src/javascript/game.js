@@ -196,7 +196,9 @@ class GameObject {
 		this.render()
 		setTimeout(() => {
 			this.width = this.el.clientWidth / window.innerWidth * 100
-			if (shape == 'bubbles') {
+			if (shape == 'squiggle') {
+				this.width /= 2
+			} else if (shape == 'bubbles') {
 				this.width *= 3
 			}
 		}, 10)
@@ -353,6 +355,7 @@ class Bullet extends GameObject {
 		game.gameobjects = game.gameobjects.filter(o => {
 			return !(o.x + o.width > this.x && o.x - o.width < this.x && o.y > this.y - 0.3 && o.y < this.y + 0.3)
 		})
+		return !!colliding.length
 	}
 }
 

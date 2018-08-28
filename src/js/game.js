@@ -248,7 +248,9 @@ var GameObject = function () {
 		this.render();
 		setTimeout(function () {
 			_this5.width = _this5.el.clientWidth / window.innerWidth * 100;
-			if (shape == 'bubbles') {
+			if (shape == 'squiggle') {
+				_this5.width /= 2;
+			} else if (shape == 'bubbles') {
 				_this5.width *= 3;
 			}
 		}, 10);
@@ -479,6 +481,7 @@ var Bullet = function (_GameObject3) {
 			game.gameobjects = game.gameobjects.filter(function (o) {
 				return !(o.x + o.width > _this12.x && o.x - o.width < _this12.x && o.y > _this12.y - 0.3 && o.y < _this12.y + 0.3);
 			});
+			return !!colliding.length;
 		}
 	}]);
 
