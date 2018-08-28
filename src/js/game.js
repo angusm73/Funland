@@ -49,6 +49,7 @@ var Game = function () {
 						_this.finishGame();
 					}
 				});
+				document.addEventListener("touchstart", function () {}, false);
 				this.ready = true;
 			}
 		}

@@ -1,6 +1,9 @@
 body.gamemode {
     overflow: hidden;
     height: 100vh;
+    .header, .footer {
+        display: none;
+    }
 }
 .background {
     position: fixed;

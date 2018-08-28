@@ -32,6 +32,7 @@ class Game {
 					this.finishGame()
 				}
 			})
+			document.addEventListener("touchstart", function () { }, false)
 			this.ready = true
 		}
 	}
