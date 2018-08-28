@@ -90,7 +90,8 @@ body.gamemode {
 	.bullet {
 		width: 4px;
 		height: 10px;
-		background: #FFF;
+        background: #FFF;
+        box-shadow: 0 0px 35px 7px red;
     }
     .score {
         top: 60px;

@@ -175,7 +175,7 @@ var Game = function () {
 					el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="226" height="199" viewBox="0 0 226 199"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="12px" fill-rule="evenodd" d="M21,235L128,48,235,235H21Z" transform="translate(-15 -42)"/></svg>';
 				}
 				el.classList.add(shape);
-				el.style.transform = 'rotate(' + Math.round(Math.random() * 18) * 20 + 'deg)';
+				el.style.setProperty('--angle', Math.round(Math.random() * 18) * 20 + 'deg');
 				el.classList.add('color-' + Math.min(3, Math.floor(Math.random() * 4 + 1)));
 				_this3.background.appendChild(el);
 				_this3.gameobjects.push(new Enemy(x, y, el, shape));
@@ -287,8 +287,14 @@ var Enemy = function (_GameObject) {
 		key: 'destroy',
 		value: function destroy() {
 			_get(Enemy.prototype.__proto__ || Object.getPrototypeOf(Enemy.prototype), 'destroy', this).call(this);
-			game.score++;
+			game.score += this.shape == 'square' ? 10 : this.shape == 'triangle' ? 5 : 1;
 			game.renderScore();
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			this.el.style.transform = 'translate(' + this.x + 'vw, ' + (100 - this.y) * -1 + 'vh) rotate(var(--angle))';
+			this.el.style.webkitTransform = 'translate(' + this.x + 'vw, ' + (100 - this.y) * -1 + 'vh) rotate(var(--angle))';
 		}
 	}]);
 
