@@ -88,12 +88,15 @@ class Game {
 		this.stopGame()
 		this.win_screen = document.createElement('div')
 		this.win_screen.classList.add('win-overlay')
-		this.win_screen.innerHTML = `<h1>You win!</h1><h2>Score: ${this.score}</h2><button class='btn' onclick='game.finishGame.bind(game)' ontouchend='game.finishGame.bind(game)'>Close</button>`
+		this.win_screen.innerHTML = `<h1>You win!</h1><h2>Score: ${this.score}</h2><button class='btn'>Close</button>`
+		let btn = this.win_screen.querySelector('.btn')
+		btn.addEventListener('click', this.finishGame.bind(this))
+		btn.addEventListener('touchend', this.finishGame.bind(this))
 		document.body.appendChild(this.win_screen)
 	}
 
 	finishGame() {
-		document.body.classList.add('gamemode')
+		document.body.classList.remove('gamemode')
 		document.body.removeEventListener("touchmove", this._preventScroll, false);
 		if (this.win_screen) {
 			this.win_screen.parentNode.removeChild(this.win_screen)
