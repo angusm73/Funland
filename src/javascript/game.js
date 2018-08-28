@@ -6,6 +6,7 @@ class Game {
 		this.total_bubbles = 8
 		this.total_square = 20
 		this.total_triangle = 20
+		this.score = 0
 		this.total_objects = this.total_squiggle + this.total_bubbles + this.total_square + this.total_triangle
 
 		this.body_content = document.querySelectorAll('body > .sw')
@@ -21,13 +22,14 @@ class Game {
 				row.firstElementChild.classList.add('fall')
 			}, i * 600)
 		})
-		setTimeout(this.startGame.bind(this), this.body_content.length * 600)
+		this.start_timer = setTimeout(this.startGame.bind(this), this.body_content.length * 600)
 
 		if (!this.ready) {
 			document.body.addEventListener('keydown', e => {
 				let kc = e.keyCode ? e.keyCode : e.which
 				if (kc == 27) {
 					this.stopGame()
+					this.finishGame()
 				}
 			})
 			this.ready = true
@@ -42,6 +44,8 @@ class Game {
 		})
 		document.body.style.overflow = 'hidden'
 		this.sortShapes()
+		this.score = 0
+		this.renderScore()
 
 		// Move enemies left & right
 		let count = -15
@@ -61,39 +65,50 @@ class Game {
 			count++
 		}, 150)
 
-		let background = document.querySelector('.background')
-		background.classList.add('active')
-		background.tabIndex = -1
-		background.focus()
+		this.background.classList.add('active')
+		this.background.tabIndex = -1
+		this.background.focus()
 
 		this.player = new Player()
 	}
 
 	stopGame() {
-		document.body.style.overflow = ''
-		document.body.removeEventListener("touchmove", this._preventScroll, false);
-		this.body_content.forEach(row => {
-			row.firstElementChild.classList.remove('fall')
-		})
+		clearTimeout(this.start_timer)
 		clearInterval(this.game_timer)
 		this.gameobjects.map(o => o.destroy())
 		this.gameobjects = []
-		this.player.destroy()
-		delete this.player
-		let background = document.querySelector('.background')
-		background.parentNode.removeChild(background)
-		this.initBackground()
+		if (this.player) {
+			this.player.destroy()
+			delete this.player
+		}
 	}
 
 	winScreen() {
 		this.stopGame()
+		this.win_screen = document.createElement('div')
+		this.win_screen.classList.add('win-overlay')
+		this.win_screen.innerHTML = `<h1>You win!</h1><h2>Score: ${this.score}</h2><button class='btn' onclick='game.finishGame.bind(game)'>Close</button>`
+		document.body.appendChild(this.win_screen)
+	}
+
+	finishGame() {
+		document.body.style.overflow = ''
+		document.body.removeEventListener("touchmove", this._preventScroll, false);
+		if (this.win_screen) {
+			this.win_screen.parentNode.removeChild(this.win_screen)
+		}
+		this.body_content.forEach(row => {
+			row.firstElementChild.classList.remove('fall')
+		})
+		this.background.parentNode.removeChild(this.background)
+		delete this.background
+		this.initBackground()
 	}
 
 	initBackground() {
-		let background = document.querySelector('.background')
-		if (!background) {
-			background = document.createElement('div')
-			background.classList.add('background')
+		if (!this.background) {
+			this.background = document.createElement('div')
+			this.background.classList.add('background')
 		}
 		let distance = (x1, y1, x2, y2) => {
 			return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
@@ -121,10 +136,20 @@ class Game {
 			el.classList.add(shape)
 			el.style.transform = 'rotate(' + (Math.round(Math.random() * 18) * 20) + 'deg)'
 			el.classList.add('color-' + Math.min(3, Math.floor(Math.random() * 4 + 1)))
-			background.appendChild(el)
-			this.gameobjects.push(new GameObject(x, y, el, shape))
+			this.background.appendChild(el)
+			this.gameobjects.push(new Enemy(x, y, el, shape))
 		}
-		document.body.insertBefore(background, document.body.childNodes[0])
+		document.body.insertBefore(this.background, document.body.childNodes[0])
+	}
+
+	renderScore() {
+		let score = this.background.querySelector('.score')
+		if (!score) {
+			score = document.createElement('span')
+			score.classList.add('score')
+			this.background.appendChild(score)
+		}
+		score.innerHTML = this.score
 	}
 
 	sortShapes() {
@@ -173,6 +198,14 @@ class GameObject {
 	render() {
 		this.el.style.transform = `translate(${this.x}vw, ${(100 - this.y) * -1}vh)`
 		this.el.style.webkitTransform = `translate(${this.x}vw, ${(100 - this.y) * -1}vh)`
+	}
+}
+
+class Enemy extends GameObject {
+	destroy() {
+		super.destroy()
+		game.score++
+		game.renderScore()
 	}
 }
 
@@ -225,9 +258,16 @@ class Player extends GameObject {
 		return this
 	}
 	shoot() {
+		if (this.shoot_cooldown) {
+			return
+		}
 		let bullet = new Bullet(this.x, this.y)
 		this.background.appendChild(bullet.el)
 		this.bullets.push(bullet)
+		this.shoot_cooldown = true
+		setTimeout(() => {
+			this.shoot_cooldown = false
+		}, 69)
 	}
 	touchMove(e) {
 		for (let i = 0; i < e.targetTouches.length; i++) {

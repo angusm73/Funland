@@ -11,7 +11,7 @@
     > span {
 		position: absolute;
 		left: 0;
-		bottom: 0;
+        bottom: 0;
     }
     .color-1 {
         --color: #CE3488;
@@ -84,5 +84,27 @@
 		width: 4px;
 		height: 10px;
 		background: #FFF;
-	}
+    }
+    .score {
+        top: 60px;
+        left: auto;
+        right: 60px;
+        font-size: 1.6em;
+        font-weight: 700;
+    }
+}
+.win-overlay {
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    padding: 40px;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 100;
 }

@@ -19,6 +19,7 @@ var Game = function () {
 		this.total_bubbles = 8;
 		this.total_square = 20;
 		this.total_triangle = 20;
+		this.score = 0;
 		this.total_objects = this.total_squiggle + this.total_bubbles + this.total_square + this.total_triangle;
 
 		this.body_content = document.querySelectorAll('body > .sw');
@@ -38,13 +39,14 @@ var Game = function () {
 					row.firstElementChild.classList.add('fall');
 				}, i * 600);
 			});
-			setTimeout(this.startGame.bind(this), this.body_content.length * 600);
+			this.start_timer = setTimeout(this.startGame.bind(this), this.body_content.length * 600);
 
 			if (!this.ready) {
 				document.body.addEventListener('keydown', function (e) {
 					var kc = e.keyCode ? e.keyCode : e.which;
 					if (kc == 27) {
 						_this.stopGame();
+						_this.finishGame();
 					}
 				});
 				this.ready = true;
@@ -62,6 +64,8 @@ var Game = function () {
 			});
 			document.body.style.overflow = 'hidden';
 			this.sortShapes();
+			this.score = 0;
+			this.renderScore();
 
 			// Move enemies left & right
 			var count = -15;
@@ -87,46 +91,58 @@ var Game = function () {
 				count++;
 			}, 150);
 
-			var background = document.querySelector('.background');
-			background.classList.add('active');
-			background.tabIndex = -1;
-			background.focus();
+			this.background.classList.add('active');
+			this.background.tabIndex = -1;
+			this.background.focus();
 
 			this.player = new Player();
 		}
 	}, {
 		key: 'stopGame',
 		value: function stopGame() {
-			document.body.style.overflow = '';
-			document.body.removeEventListener("touchmove", this._preventScroll, false);
-			this.body_content.forEach(function (row) {
-				row.firstElementChild.classList.remove('fall');
-			});
+			clearTimeout(this.start_timer);
 			clearInterval(this.game_timer);
 			this.gameobjects.map(function (o) {
 				return o.destroy();
 			});
 			this.gameobjects = [];
-			this.player.destroy();
-			delete this.player;
-			var background = document.querySelector('.background');
-			background.parentNode.removeChild(background);
-			this.initBackground();
+			if (this.player) {
+				this.player.destroy();
+				delete this.player;
+			}
 		}
 	}, {
 		key: 'winScreen',
 		value: function winScreen() {
 			this.stopGame();
+			this.win_screen = document.createElement('div');
+			this.win_screen.classList.add('win-overlay');
+			this.win_screen.innerHTML = '<h1>You win!</h1><h2>Score: ' + this.score + '</h2><button class=\'btn\' onclick=\'game.finishGame.bind(game)\'>Close</button>';
+			document.body.appendChild(this.win_screen);
+		}
+	}, {
+		key: 'finishGame',
+		value: function finishGame() {
+			document.body.style.overflow = '';
+			document.body.removeEventListener("touchmove", this._preventScroll, false);
+			if (this.win_screen) {
+				this.win_screen.parentNode.removeChild(this.win_screen);
+			}
+			this.body_content.forEach(function (row) {
+				row.firstElementChild.classList.remove('fall');
+			});
+			this.background.parentNode.removeChild(this.background);
+			delete this.background;
+			this.initBackground();
 		}
 	}, {
 		key: 'initBackground',
 		value: function initBackground() {
 			var _this3 = this;
 
-			var background = document.querySelector('.background');
-			if (!background) {
-				background = document.createElement('div');
-				background.classList.add('background');
+			if (!this.background) {
+				this.background = document.createElement('div');
+				this.background.classList.add('background');
 			}
 			var distance = function distance(x1, y1, x2, y2) {
 				return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
@@ -157,14 +173,25 @@ var Game = function () {
 				el.classList.add(shape);
 				el.style.transform = 'rotate(' + Math.round(Math.random() * 18) * 20 + 'deg)';
 				el.classList.add('color-' + Math.min(3, Math.floor(Math.random() * 4 + 1)));
-				background.appendChild(el);
-				_this3.gameobjects.push(new GameObject(x, y, el, shape));
+				_this3.background.appendChild(el);
+				_this3.gameobjects.push(new Enemy(x, y, el, shape));
 			};
 
 			while (this.gameobjects.length < this.total_objects) {
 				_loop();
 			}
-			document.body.insertBefore(background, document.body.childNodes[0]);
+			document.body.insertBefore(this.background, document.body.childNodes[0]);
+		}
+	}, {
+		key: 'renderScore',
+		value: function renderScore() {
+			var score = this.background.querySelector('.score');
+			if (!score) {
+				score = document.createElement('span');
+				score.classList.add('score');
+				this.background.appendChild(score);
+			}
+			score.innerHTML = this.score;
 		}
 	}, {
 		key: 'sortShapes',
@@ -232,31 +259,52 @@ var GameObject = function () {
 	return GameObject;
 }();
 
-var Player = function (_GameObject) {
-	_inherits(Player, _GameObject);
+var Enemy = function (_GameObject) {
+	_inherits(Enemy, _GameObject);
+
+	function Enemy() {
+		_classCallCheck(this, Enemy);
+
+		return _possibleConstructorReturn(this, (Enemy.__proto__ || Object.getPrototypeOf(Enemy)).apply(this, arguments));
+	}
+
+	_createClass(Enemy, [{
+		key: 'destroy',
+		value: function destroy() {
+			_get(Enemy.prototype.__proto__ || Object.getPrototypeOf(Enemy.prototype), 'destroy', this).call(this);
+			game.score++;
+			game.renderScore();
+		}
+	}]);
+
+	return Enemy;
+}(GameObject);
+
+var Player = function (_GameObject2) {
+	_inherits(Player, _GameObject2);
 
 	function Player() {
 		_classCallCheck(this, Player);
 
-		var _this5 = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, 50, 95, document.createElement('span'), 'player'));
+		var _this6 = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, 50, 95, document.createElement('span'), 'player'));
 
-		_this5.moving = 0;
-		_this5.el.style.transition = 'all .05s ease-out';
+		_this6.moving = 0;
+		_this6.el.style.transition = 'all .05s ease-out';
 
-		_this5.background = document.querySelector('.background');
-		_this5.background.appendChild(_this5.el);
+		_this6.background = document.querySelector('.background');
+		_this6.background.appendChild(_this6.el);
 
-		_this5.init();
-		_this5.render();
+		_this6.init();
+		_this6.render();
 
-		_this5.bullets = [];
-		return _this5;
+		_this6.bullets = [];
+		return _this6;
 	}
 
 	_createClass(Player, [{
 		key: 'init',
 		value: function init() {
-			var _this6 = this;
+			var _this7 = this;
 
 			this.background.addEventListener("touchstart", this.touchMove.bind(this), false);
 			this.background.addEventListener("touchmove", this.touchMove.bind(this), false);
@@ -264,8 +312,8 @@ var Player = function (_GameObject) {
 			this.background.addEventListener("keydown", this.keyDown.bind(this), false);
 			this.background.addEventListener("keyup", this.keyUp.bind(this), false);
 			this.timer = setInterval(function () {
-				_this6.move().render();
-				_this6.bullets.map(function (b) {
+				_this7.move().render();
+				_this7.bullets.map(function (b) {
 					return b.render();
 				});
 			}, 16);
@@ -302,9 +350,18 @@ var Player = function (_GameObject) {
 	}, {
 		key: 'shoot',
 		value: function shoot() {
+			var _this8 = this;
+
+			if (this.shoot_cooldown) {
+				return;
+			}
 			var bullet = new Bullet(this.x, this.y);
 			this.background.appendChild(bullet.el);
 			this.bullets.push(bullet);
+			this.shoot_cooldown = true;
+			setTimeout(function () {
+				_this8.shoot_cooldown = false;
+			}, 69);
 		}
 	}, {
 		key: 'touchMove',
@@ -364,27 +421,27 @@ var Player = function (_GameObject) {
 	return Player;
 }(GameObject);
 
-var Bullet = function (_GameObject2) {
-	_inherits(Bullet, _GameObject2);
+var Bullet = function (_GameObject3) {
+	_inherits(Bullet, _GameObject3);
 
 	function Bullet(x, y) {
 		_classCallCheck(this, Bullet);
 
-		var _this7 = _possibleConstructorReturn(this, (Bullet.__proto__ || Object.getPrototypeOf(Bullet)).call(this, x, y, document.createElement('span'), 'bullet'));
+		var _this9 = _possibleConstructorReturn(this, (Bullet.__proto__ || Object.getPrototypeOf(Bullet)).call(this, x, y, document.createElement('span'), 'bullet'));
 
-		_this7.move();
-		return _this7;
+		_this9.move();
+		return _this9;
 	}
 
 	_createClass(Bullet, [{
 		key: 'move',
 		value: function move() {
-			var _this8 = this;
+			var _this10 = this;
 
 			this.timer = setInterval(function () {
-				_this8.y -= 0.5;
-				if (_this8.y < 0 || _this8.checkCollisions()) {
-					_this8.destroy();
+				_this10.y -= 0.5;
+				if (_this10.y < 0 || _this10.checkCollisions()) {
+					_this10.destroy();
 				}
 			}, 16);
 			return this;
@@ -398,16 +455,16 @@ var Bullet = function (_GameObject2) {
 	}, {
 		key: 'checkCollisions',
 		value: function checkCollisions() {
-			var _this9 = this;
+			var _this11 = this;
 
 			var colliding = game.gameobjects.filter(function (o) {
-				return o.x > _this9.x - 1 && o.x < _this9.x + 1 && o.y > _this9.y - 0.5 && o.y < _this9.y + 0.5;
+				return o.x > _this11.x - 1 && o.x < _this11.x + 1 && o.y > _this11.y - 0.5 && o.y < _this11.y + 0.5;
 			});
 			colliding.map(function (o) {
 				return o.destroy();
 			});
 			game.gameobjects = game.gameobjects.filter(function (o) {
-				return !(o.x > _this9.x - 1 && o.x < _this9.x + 1 && o.y > _this9.y - 0.5 && o.y < _this9.y + 0.5);
+				return !(o.x > _this11.x - 1 && o.x < _this11.x + 1 && o.y > _this11.y - 0.5 && o.y < _this11.y + 0.5);
 			});
 		}
 	}]);
