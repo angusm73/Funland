@@ -1,6 +1,7 @@
 class Game {
 
 	constructor() {
+		this.player = null
 		this.total_squiggle = 8
 		this.total_bubbles = 8
 		this.total_square = 20
@@ -12,8 +13,6 @@ class Game {
 
 		this.initBackground()
 		// this.initGame()
-
-		this.player = new Player()
 	}
 
 	initGame() {
@@ -23,6 +22,16 @@ class Game {
 			}, i * 600)
 		})
 		setTimeout(this.startGame.bind(this), this.body_content.length * 600)
+
+		if (!this.ready) {
+			document.body.addEventListener('keydown', e => {
+				let kc = e.keyCode ? e.keyCode : e.which
+				if (kc == 27) {
+					this.stopGame()
+				}
+			})
+			this.ready = true
+		}
 	}
 
 	startGame() {
@@ -46,18 +55,18 @@ class Game {
 			}
 			this.gameobjects.map(i => i.x += move_distance)
 			this.gameobjects.map(i => i.render())
+			if (this.gameobjects.length == 0) {
+				this.winScreen()
+			}
 			count++
 		}, 150)
 
-		document.body.addEventListener('keydown', e => {
-			let kc = e.keyCode ? e.keyCode : e.which
-			if (kc == 27) {
-				this.stopGame()
-			}
-		})
-
 		let background = document.querySelector('.background')
 		background.classList.add('active')
+		background.tabIndex = -1
+		background.focus()
+
+		this.player = new Player()
 	}
 
 	stopGame() {
@@ -69,17 +78,26 @@ class Game {
 		clearInterval(this.game_timer)
 		this.gameobjects.map(o => o.destroy())
 		this.gameobjects = []
-		this.initBackground()
+		this.player.destroy()
+		delete this.player
 		let background = document.querySelector('.background')
-		background.classList.remove('active')
+		background.parentNode.removeChild(background)
+		this.initBackground()
+	}
+
+	winScreen() {
+		this.stopGame()
 	}
 
 	initBackground() {
-		let background = document.createElement('div')
+		let background = document.querySelector('.background')
+		if (!background) {
+			background = document.createElement('div')
+			background.classList.add('background')
+		}
 		let distance = (x1, y1, x2, y2) => {
 			return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
 		}
-		background.classList.add('background')
 		while (this.gameobjects.length < this.total_objects) {
 			let x = Math.random() * 100
 			let y = Math.random() * 100
@@ -176,31 +194,23 @@ class Player extends GameObject {
 		this.background.addEventListener("touchstart", this.touchMove.bind(this), false)
 		this.background.addEventListener("touchmove", this.touchMove.bind(this), false)
 		this.background.addEventListener("touchend", this.touchEnd.bind(this), false)
-		document.body.addEventListener('keydown', e => {
-			let kc = e.keyCode ? e.keyCode : e.which
-			if (kc == 37) {
-				this.moving = -1
-				return false
-			} else if (kc == 39) {
-				this.moving = 1
-				return false
-			} else if (kc == 32) {
-				this.shoot()
-				return false
-			}
-		})
-		document.body.addEventListener('keyup', e => {
-			let kc = e.keyCode ? e.keyCode : e.which
-			if (kc == 37) {
-				this.moving = 0
-			} else if (kc == 39) {
-				this.moving = 0
-			}
-		})
-		setInterval(() => {
+		this.background.addEventListener("keydown", this.keyDown.bind(this), false)
+		this.background.addEventListener("keyup", this.keyUp.bind(this), false)
+		this.timer = setInterval(() => {
 			this.move().render()
 			this.bullets.map(b => b.render())
 		}, 16)
+	}
+	destroy() {
+		super.destroy()
+		clearInterval(this.timer)
+		this.background.removeEventListener("touchstart", this.touchMove.bind(this), false)
+		this.background.removeEventListener("touchmove", this.touchMove.bind(this), false)
+		this.background.removeEventListener("touchend", this.touchEnd.bind(this), false)
+		this.background.removeEventListener("keydown", this.keyDown.bind(this), false)
+		this.background.removeEventListener("keyup", this.keyUp.bind(this), false)
+		this.bullets.map(b => b.destroy())
+		this.bullets = []
 	}
 	move() {
 		if (this.move === 0) {
@@ -243,6 +253,27 @@ class Player extends GameObject {
 			}
 		}
 	}
+	keyDown(e) {
+		let kc = e.keyCode ? e.keyCode : e.which
+		if (kc == 37) {
+			this.moving = -1
+			return false
+		} else if (kc == 39) {
+			this.moving = 1
+			return false
+		} else if (kc == 32) {
+			this.shoot()
+			return false
+		}
+	}
+	keyUp(e) {
+		let kc = e.keyCode ? e.keyCode : e.which
+		if (kc == 37) {
+			this.moving = 0
+		} else if (kc == 39) {
+			this.moving = 0
+		}
+	}
 }
 
 class Bullet extends GameObject {
@@ -251,14 +282,17 @@ class Bullet extends GameObject {
 		this.move()
 	}
 	move() {
-		let timer = setInterval(() => {
+		this.timer = setInterval(() => {
 			this.y -= 0.5
 			if (this.y < 0 || this.checkCollisions()) {
-				clearInterval(timer)
 				this.destroy()
 			}
 		}, 16)
 		return this
+	}
+	destroy() {
+		super.destroy()
+		clearInterval(this.timer)
 	}
 	checkCollisions() {
 		const colliding = game.gameobjects.filter(o => {
