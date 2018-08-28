@@ -5,6 +5,8 @@ class FrontEnd {
         // this.initModalForm()
         this.initMusic()
         this.initHero()
+
+        document.addEventListener("touchstart", function () { }, false)
     }
 
     initModal() {

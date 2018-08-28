@@ -12,6 +12,8 @@ var FrontEnd = function () {
         // this.initModalForm()
         this.initMusic();
         this.initHero();
+
+        document.addEventListener("touchstart", function () {}, false);
     }
 
     _createClass(FrontEnd, [{
