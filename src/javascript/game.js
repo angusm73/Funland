@@ -88,7 +88,7 @@ class Game {
 		this.stopGame()
 		this.win_screen = document.createElement('div')
 		this.win_screen.classList.add('win-overlay')
-		this.win_screen.innerHTML = `<h1>You win!</h1><h2>Score: ${this.score}</h2><button class='btn' onclick='game.finishGame.bind(game)'>Close</button>`
+		this.win_screen.innerHTML = `<h1>You win!</h1><h2>Score: ${this.score}</h2><button class='btn' onclick='game.finishGame.bind(game)' ontouchend='game.finishGame.bind(game)'>Close</button>`
 		document.body.appendChild(this.win_screen)
 	}
 
