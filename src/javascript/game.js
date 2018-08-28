@@ -13,6 +13,7 @@ class Game {
 		this.gameobjects = []
 
 		this.initBackground()
+		this.initSound()
 		// this.initGame()
 	}
 
@@ -144,6 +145,15 @@ class Game {
 			this.gameobjects.push(new Enemy(x, y, el, shape))
 		}
 		document.body.insertBefore(this.background, document.body.childNodes[0])
+	}
+
+	initSound() {
+		this.shoot_sound = document.createElement('audio')
+		this.shoot_sound.id = 'shoot'
+		this.shoot_sound.src = '/sound/shoot.wav'
+		if (this.background) {
+			this.background.appendChild(this.shoot_sound)
+		}
 	}
 
 	renderScore() {
@@ -279,6 +289,8 @@ class Player extends GameObject {
 			return
 		}
 		let bullet = new Bullet(this.x, this.y)
+		game.shoot_sound.currentTime = 0
+		game.shoot_sound.play()
 		this.background.appendChild(bullet.el)
 		this.bullets.push(bullet)
 		this.shoot_cooldown = true

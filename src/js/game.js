@@ -26,6 +26,7 @@ var Game = function () {
 		this.gameobjects = [];
 
 		this.initBackground();
+		this.initSound();
 		// this.initGame()
 	}
 
@@ -185,6 +186,16 @@ var Game = function () {
 				_loop();
 			}
 			document.body.insertBefore(this.background, document.body.childNodes[0]);
+		}
+	}, {
+		key: 'initSound',
+		value: function initSound() {
+			this.shoot_sound = document.createElement('audio');
+			this.shoot_sound.id = 'shoot';
+			this.shoot_sound.src = '/sound/shoot.wav';
+			if (this.background) {
+				this.background.appendChild(this.shoot_sound);
+			}
 		}
 	}, {
 		key: 'renderScore',
@@ -377,6 +388,8 @@ var Player = function (_GameObject2) {
 				return;
 			}
 			var bullet = new Bullet(this.x, this.y);
+			game.shoot_sound.currentTime = 0;
+			game.shoot_sound.play();
 			this.background.appendChild(bullet.el);
 			this.bullets.push(bullet);
 			this.shoot_cooldown = true;
