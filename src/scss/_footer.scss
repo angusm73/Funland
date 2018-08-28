@@ -13,19 +13,18 @@
 		flex-wrap: wrap;
 	}
 	.logo {
+        @extend %transition;
         position: relative;
         display: block;
 		margin: -55px 0;
         min-width: 220px;
         max-width: 220px;
-        &::before {
-            position: absolute;
-            content: '';
-            top: 5px;
-            bottom: 5px;
-            left: 40px;
-            right: 45px;
-            border-radius: 100%;
+        opacity: 0.5;
+        &:hover {
+            opacity: 0.8;
+        }
+        &:active {
+            opacity: 1;
         }
 		img {
             position: relative;
@@ -106,5 +105,37 @@
 @media (min-width: 1281px) {
     .footer footer {
         margin: 0 -40px;
+    }
+}
+
+@media (max-width: 720px) {
+    .footer {
+        text-align: center;
+        footer {
+            flex-direction: column;
+        }
+        .logo {
+            margin: 0 auto $mobile-pad/2;
+        }
+        .footer-nav {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            a {
+                padding-left: $mobile-pad/4;
+                padding-right: $mobile-pad/4;
+            }
+        }
+        .social {
+            margin-bottom: $mobile-pad/2;
+            order: 1;
+            a {
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }
+        }
+        .copyright {
+            order: 2;
+        }
     }
 }

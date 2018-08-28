@@ -62,16 +62,6 @@ require "./inc/header.php";?>
             <p>Driving, bowling, shooting, token, skill, prize, redemption, pinball,
                 crane, dedicated and video games. We have them all!</p>
         </div>
-        <!-- <div class="attraction">
-            <h3>Air Hockey</h3>
-            <p>Driving, bowling, shooting, token, skill, prize, redemption, pinball,
-                crane, dedicated and video games. We have them all!</p>
-        </div>
-        <div class="attraction">
-            <h3>Space Invaders</h3>
-            <p>Driving, bowling, shooting, token, skill, prize, redemption, pinball,
-                crane, dedicated and video games. We have them all!</p>
-        </div> -->
         <div class="attraction">
             <img src="/img/home/jump-star-drop-ride.jpg" alt="Jumping Star">
             <h3>Star Jump</h3>

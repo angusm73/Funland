@@ -42,7 +42,7 @@ class Game {
 			top: header.clientHeight,
 			behavior: "smooth"
 		})
-		document.body.style.overflow = 'hidden'
+		document.body.classList.add('gamemode')
 		this.sortShapes()
 		this.score = 0
 		this.renderScore()
@@ -92,7 +92,7 @@ class Game {
 	}
 
 	finishGame() {
-		document.body.style.overflow = ''
+		document.body.classList.add('gamemode')
 		document.body.removeEventListener("touchmove", this._preventScroll, false);
 		if (this.win_screen) {
 			this.win_screen.parentNode.removeChild(this.win_screen)

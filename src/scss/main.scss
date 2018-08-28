@@ -367,7 +367,7 @@ select.form-control {
 /* --- CTA ROW --- */
 .cta-row {
     position: relative;
-    padding: 80px 40px 80px 0;
+    padding: 80px 40px;
     background: darken($cyan, 10%);
     color: darken($cyan, 34%);
     display: flex;
@@ -396,6 +396,23 @@ select.form-control {
         &:active {
             box-shadow: 5px 5px 30px darken($cyan, 20%);
         }
+    }
+    @media (min-width: 1281px) {
+        padding-left: 0;
+    }
+    @media (max-width: 740px) {
+        flex-direction: column;
+        text-align: center;
+        .text, .btn {
+            margin-top: 20px;
+        }
+        .img-wrapper {
+            width: 110px;
+        }
+    }
+    @media (max-width: 500px) {
+        padding-top: $mobile-pad;
+        padding-bottom: $mobile-pad;
     }
 }
 
@@ -434,18 +451,27 @@ select.form-control {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 80px 40px;
+    padding: $pad 40px $pad - 20px;
     background: #0A0A0A;
     z-index: 1;
+    @media (max-width: 500px) {
+        padding-top: $mobile-pad;
+        padding-bottom: $mobile-pad - 20px;
+    }
     h2 {
         width: 100%;
         margin-bottom: 40px;
     }
     .view-all {
         @extend %link;
-        position: absolute;
-        top: 90px;
-        right: 40px;
+        @media (min-width: 551px) {
+            position: absolute;
+            top: 90px;
+            right: 40px;
+        }
+        @media (max-width: 550px) {
+            margin: -35px 0 40px;
+        }
         color: #FFF;
         &:hover {
             color: $pink;
@@ -455,7 +481,16 @@ select.form-control {
         }
     }
     .attraction {
-        flex-basis: 22%;
+        margin-bottom: 20px;
+        @media (min-width: 901px) {
+            flex-basis: 22%;
+        }
+        @media (min-width: 501px) and (max-width: 900px) {
+            flex-basis: 47%;
+        }
+        @media (max-width: 500px) {
+            flex-basis: 100%;
+        }
         img {
             display: block;
             width: 100%;
