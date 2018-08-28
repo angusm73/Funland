@@ -192,7 +192,14 @@ class GameObject {
 		this.el.classList.add('shape')
 		this.el.classList.add(shape)
 		this.shape = shape
+		// this.width = this.el.clientWidth
 		this.render()
+		setTimeout(() => {
+			this.width = this.el.clientWidth / window.innerWidth * 100
+			if (shape == 'bubbles') {
+				this.width *= 3
+			}
+		}, 10)
 	}
 	destroy() {
 		if (this.el.parentNode) {
@@ -340,11 +347,11 @@ class Bullet extends GameObject {
 	}
 	checkCollisions() {
 		const colliding = game.gameobjects.filter(o => {
-			return o.x > this.x - 1 && o.x < this.x + 1 && o.y > this.y - 0.5 && o.y < this.y + 0.5
+			return o.x + o.width > this.x && o.x - o.width < this.x && o.y > this.y - 0.3 && o.y < this.y + 0.3
 		})
 		colliding.map(o => o.destroy())
 		game.gameobjects = game.gameobjects.filter(o => {
-			return !(o.x > this.x - 1 && o.x < this.x + 1 && o.y > this.y - 0.5 && o.y < this.y + 0.5)
+			return !(o.x + o.width > this.x && o.x - o.width < this.x && o.y > this.y - 0.3 && o.y < this.y + 0.3)
 		})
 	}
 }

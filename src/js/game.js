@@ -233,6 +233,8 @@ var Game = function () {
 
 var GameObject = function () {
 	function GameObject(x, y, element, shape) {
+		var _this5 = this;
+
 		_classCallCheck(this, GameObject);
 
 		this.x = x;
@@ -242,7 +244,14 @@ var GameObject = function () {
 		this.el.classList.add('shape');
 		this.el.classList.add(shape);
 		this.shape = shape;
+		// this.width = this.el.clientWidth
 		this.render();
+		setTimeout(function () {
+			_this5.width = _this5.el.clientWidth / window.innerWidth * 100;
+			if (shape == 'bubbles') {
+				_this5.width *= 3;
+			}
+		}, 10);
 	}
 
 	_createClass(GameObject, [{
@@ -290,25 +299,25 @@ var Player = function (_GameObject2) {
 	function Player() {
 		_classCallCheck(this, Player);
 
-		var _this6 = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, 50, 95, document.createElement('span'), 'player'));
+		var _this7 = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, 50, 95, document.createElement('span'), 'player'));
 
-		_this6.moving = 0;
-		_this6.el.style.transition = 'all .05s ease-out';
+		_this7.moving = 0;
+		_this7.el.style.transition = 'all .05s ease-out';
 
-		_this6.background = document.querySelector('.background');
-		_this6.background.appendChild(_this6.el);
+		_this7.background = document.querySelector('.background');
+		_this7.background.appendChild(_this7.el);
 
-		_this6.init();
-		_this6.render();
+		_this7.init();
+		_this7.render();
 
-		_this6.bullets = [];
-		return _this6;
+		_this7.bullets = [];
+		return _this7;
 	}
 
 	_createClass(Player, [{
 		key: 'init',
 		value: function init() {
-			var _this7 = this;
+			var _this8 = this;
 
 			this.background.addEventListener("touchstart", this.touchMove.bind(this), false);
 			this.background.addEventListener("touchmove", this.touchMove.bind(this), false);
@@ -316,8 +325,8 @@ var Player = function (_GameObject2) {
 			this.background.addEventListener("keydown", this.keyDown.bind(this), false);
 			this.background.addEventListener("keyup", this.keyUp.bind(this), false);
 			this.timer = setInterval(function () {
-				_this7.move().render();
-				_this7.bullets.map(function (b) {
+				_this8.move().render();
+				_this8.bullets.map(function (b) {
 					return b.render();
 				});
 			}, 16);
@@ -354,7 +363,7 @@ var Player = function (_GameObject2) {
 	}, {
 		key: 'shoot',
 		value: function shoot() {
-			var _this8 = this;
+			var _this9 = this;
 
 			if (this.shoot_cooldown) {
 				return;
@@ -364,7 +373,7 @@ var Player = function (_GameObject2) {
 			this.bullets.push(bullet);
 			this.shoot_cooldown = true;
 			setTimeout(function () {
-				_this8.shoot_cooldown = false;
+				_this9.shoot_cooldown = false;
 			}, 69);
 		}
 	}, {
@@ -431,21 +440,21 @@ var Bullet = function (_GameObject3) {
 	function Bullet(x, y) {
 		_classCallCheck(this, Bullet);
 
-		var _this9 = _possibleConstructorReturn(this, (Bullet.__proto__ || Object.getPrototypeOf(Bullet)).call(this, x, y, document.createElement('span'), 'bullet'));
+		var _this10 = _possibleConstructorReturn(this, (Bullet.__proto__ || Object.getPrototypeOf(Bullet)).call(this, x, y, document.createElement('span'), 'bullet'));
 
-		_this9.move();
-		return _this9;
+		_this10.move();
+		return _this10;
 	}
 
 	_createClass(Bullet, [{
 		key: 'move',
 		value: function move() {
-			var _this10 = this;
+			var _this11 = this;
 
 			this.timer = setInterval(function () {
-				_this10.y -= 0.5;
-				if (_this10.y < 0 || _this10.checkCollisions()) {
-					_this10.destroy();
+				_this11.y -= 0.5;
+				if (_this11.y < 0 || _this11.checkCollisions()) {
+					_this11.destroy();
 				}
 			}, 16);
 			return this;
@@ -459,16 +468,16 @@ var Bullet = function (_GameObject3) {
 	}, {
 		key: 'checkCollisions',
 		value: function checkCollisions() {
-			var _this11 = this;
+			var _this12 = this;
 
 			var colliding = game.gameobjects.filter(function (o) {
-				return o.x > _this11.x - 1 && o.x < _this11.x + 1 && o.y > _this11.y - 0.5 && o.y < _this11.y + 0.5;
+				return o.x + o.width > _this12.x && o.x - o.width < _this12.x && o.y > _this12.y - 0.3 && o.y < _this12.y + 0.3;
 			});
 			colliding.map(function (o) {
 				return o.destroy();
 			});
 			game.gameobjects = game.gameobjects.filter(function (o) {
-				return !(o.x > _this11.x - 1 && o.x < _this11.x + 1 && o.y > _this11.y - 0.5 && o.y < _this11.y + 0.5);
+				return !(o.x + o.width > _this12.x && o.x - o.width < _this12.x && o.y > _this12.y - 0.3 && o.y < _this12.y + 0.3);
 			});
 		}
 	}]);
