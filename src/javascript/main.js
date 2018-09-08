@@ -194,6 +194,11 @@ class FrontEnd {
                 item.item.style.display = active ? 'block' : 'none'
                 if (active) {
                     item.label.classList.add('active')
+                    if (item.item.classList.contains('laser-gun')) {
+                        setTimeout(this.shootLaser, 360)
+                    } else {
+                        this.killLaser()
+                    }
                 } else {
                     item.label.classList.remove('active')
                 }
@@ -223,11 +228,20 @@ class FrontEnd {
     shootLaser() {
         const nob = document.getElementById('nob')
         const nob_offset = nob.getBoundingClientRect()
-        let laser = document.createElement('span')
-        laser.classList.add('laser-glow')
+        let laser = document.querySelector('.laser-glow')
+        if (!laser) {
+            laser = document.createElement('span')
+            laser.classList.add('laser-glow')
+            document.body.appendChild(laser)
+        }
         laser.style.top = nob_offset.top + 15 + 'px'
         laser.style.left = nob_offset.left + 15 + 'px'
-        document.body.appendChild(laser)
+    }
+    killLaser() {
+        let laser = document.querySelector('.laser-glow')
+        if (laser) {
+            laser.parentNode.removeChild(laser)
+        }
     }
 
     initGame() {
