@@ -296,6 +296,7 @@ select.form-control {
 /* --- AUDIO CONTROLS --- */
 .audio-controls {
     position: absolute;
+    display: none;
     bottom: 0;
     right: 0;
     padding: 0 10px 10px 0;
@@ -308,14 +309,10 @@ select.form-control {
 /* --- HERO --- */
 .hero {
     position: relative;
-    padding: 120px 40px;
+    padding: 240px 40px;
     background: darken($yellow, 10%);
     color: darken($yellow, 40%);
     overflow: hidden;
-    .info {
-        width: 40%;
-        margin-right: 10%;
-    }
     .img-wrap {
         flex: 1;
         margin: -$pad 0;
@@ -335,6 +332,9 @@ select.form-control {
             height: 100%;
         }
     }
+    h1, h2, p, .btn {
+        position: relative;
+    }
     h1 {
         margin-bottom: 20px;
         line-height: 1;
@@ -352,14 +352,23 @@ select.form-control {
     }
     svg {
         position: absolute;
-        bottom: 40px;
-        right: 80px;
-        width: 260px;
-        height: 260px;
-        animation: slideFromRight .35s ease-out;
-        &.dodgem, &.arcade-machine {
+        &:not(.australia) {
+            bottom: 200px;
+            right: 80px;
+            width: 260px;
+            height: 300px;
+            animation: slideFromRight .35s ease-out;
+        }
+        &.australia {
+            bottom: -25%;
+            right: -50px;
+            height: 140%;
+            path {
+                fill: #A37500;
+            }
+        }
+        &.dodgem, &.laser-gun {
             display: none;
-            fill: #4B3909;
         }
     }
     @media (min-width: 701px) and (max-width: 1000px) {
@@ -368,7 +377,7 @@ select.form-control {
     @media (min-width: 501px) and (max-width: 700px) {
         padding-top: $pad;
         padding-bottom: $pad*2;
-        svg {
+        svg:not(.australia) {
             width: 200px;
             height: 200px;
         }
@@ -376,7 +385,7 @@ select.form-control {
     @media (max-width: 500px) {
         padding-top: $mobile-pad;
         padding-bottom: 240px;
-        svg {
+        svg:not(.australia) {
             width: 160px;
             height: 160px;
         }
@@ -386,14 +395,14 @@ select.form-control {
 /* --- CTA ROW --- */
 .cta-row {
     position: relative;
-    padding: 80px 40px;
+    padding: $pad $pad/2;
     background: darken($cyan, 10%);
     color: darken($cyan, 34%);
     display: flex;
     justify-content: center;
     align-items: center;
     .img-wrapper {
-        width: 25%;
+        flex-basis: 19%;
         text-align: center;
         svg {
             fill: currentColor;
@@ -401,14 +410,30 @@ select.form-control {
         }
     }
     .text {
-        margin: 0 40px;
-        h3 {
-            margin-bottom: 0;
+        flex-basis: 50%;
+        padding: 0 $pad;
+    }
+    .actions {
+        display: flex;
+        flex-basis: 31%;
+        flex-direction: column;
+        align-items: center;
+        span {
+            margin-bottom: 0.25em;
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+        a:not(.btn) {
+            @extend %link;
+            font-family: $heading-font;
+            font-size: 1.5em;
+            color: inherit;
         }
     }
     .btn {
-        margin-top: -26px;
+        margin-bottom: 20px;
         box-shadow: 10px 10px 20px darken($cyan, 20%);
+        white-space: nowrap;
         &:hover {
             box-shadow: 15px 15px 30px darken($cyan, 20%);
         }
@@ -416,13 +441,15 @@ select.form-control {
             box-shadow: 5px 5px 30px darken($cyan, 20%);
         }
     }
-    @media (min-width: 1281px) {
-        padding-left: 0;
+    @media (min-width: 741px) {
     }
     @media (max-width: 740px) {
         flex-direction: column;
         text-align: center;
-        .text, .btn {
+        .text {
+            padding: 0;
+        }
+        .text, .actions {
             margin-top: 20px;
         }
         .img-wrapper {

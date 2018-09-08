@@ -8,11 +8,13 @@ require "./inc/header.php";?>
 
 <div class="sw p-0">
     <div class="hero">
-        <h1>3 Levels of <span data-item="arcade-machine">Arcade Fun</span> <br><span data-item="dodgem">Dodgems</span> <br>+ <span data-item="laser-gun" class="active">Laser Tag</span></h1>
+        <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/australia.svg")?>
+        <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/gun-2.svg")?>
+        <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/dodgem-2.svg")?>
+        <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/arcade-machine-2.svg")?>
+        <h1>Plenty of <span data-item="arcade-machine" class="active">Arcade Fun</span> <br><span data-item="dodgem">Dodgems</span> + <span data-item="laser-gun">Laser Tag</span></h1>
+        <h2>At 6 locations</h2>
         <button class="btn" onclick="game.initGame()">Explore</button>
-        <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/gun.svg")?>
-        <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/dodgem.svg")?>
-        <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/arcade-machine.svg")?>
         <audio src="/sound/slow-down-baby.wav" id="cheeky-tune"></audio>
         <div class="audio-controls">
             <button class="btn play">&#9658;</button>
@@ -26,10 +28,15 @@ require "./inc/header.php";?>
             <?=file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/celebration.svg")?>
         </div>
         <div class="text">
-            <h2>Birthday coming up?</h2>
-            <h3>Book a Funland party</h3>
+            <h2>Funland Parties</h2>
+            <h3>Book your next party with us!</h3>
+            <p>We have a great range of party packages that we can tailor to suit your needs and budget. We offer the best range at amazing value and can cater for groups of almost any size or age!</p>
         </div>
-        <a href="/parties" class="btn">Book now</a>
+        <div class="actions">
+            <a href="/parties" class="btn">Book now</a>
+            <span>or call</span>
+            <a href="tel:0244543220">(02) 4454 3220</a>
+        </div>
     </div>
 </div>
 
