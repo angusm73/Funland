@@ -204,6 +204,12 @@ class FrontEnd {
                 showSlide.call(this, x)
                 slide_counter = x + 1
             })
+            i.addEventListener('touchstart', () => {
+                stop_timer()
+                showSlide.call(this, x)
+                slide_counter = x + 1
+                setTimeout(start_timer, 2000)
+            })
             i.addEventListener('mouseleave', start_timer)
             return {
                 label: i,

@@ -215,6 +215,12 @@ var FrontEnd = function () {
                     showSlide.call(_this3, x);
                     slide_counter = x + 1;
                 });
+                i.addEventListener('touchstart', function () {
+                    stop_timer();
+                    showSlide.call(_this3, x);
+                    slide_counter = x + 1;
+                    setTimeout(start_timer, 2000);
+                });
                 i.addEventListener('mouseleave', start_timer);
                 return {
                     label: i,
