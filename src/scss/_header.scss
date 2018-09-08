@@ -183,6 +183,10 @@
         .social, .main-nav {
             justify-content: center;
         }
+        .main-nav {
+            margin: 0 -15px;
+            width: auto;
+        }
         .social .btn {
             display: none;
         }

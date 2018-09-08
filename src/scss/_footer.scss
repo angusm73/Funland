@@ -131,6 +131,7 @@
             flex-direction: row;
             flex-wrap: wrap;
             justify-content: center;
+            margin: 0 -15px 20px;
             a {
                 padding-left: $mobile-pad/4;
                 padding-right: $mobile-pad/4;
@@ -148,5 +149,12 @@
         .copyright {
             order: 2;
         }
+    }
+}
+
+@media (max-width: 450px) {
+    .footer .footer-nav a {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
