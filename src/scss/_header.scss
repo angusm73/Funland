@@ -157,7 +157,7 @@
 	.header {
 		header {
 			flex-direction: column;
-			padding-bottom: 30px;
+			padding: $mobile-pad/2 15px;
 		}
 		.logo {
             min-width: 0;
@@ -180,11 +180,17 @@
 				margin: 0 15px;
 			}
         }
-        .social {
+        .social, .main-nav {
             justify-content: center;
-            .btn {
-                display: none;
-            }
         }
+        .social .btn {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 450px) {
+    .header .social .phone {
+        display: none;
     }
 }

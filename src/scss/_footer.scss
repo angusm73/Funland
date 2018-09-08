@@ -8,7 +8,6 @@
         padding: 40px;
         background: darken($purple, 10%);
         color: $yellow;
-		align-items: center;
 		justify-content: space-between;
 		flex-wrap: wrap;
 	}
@@ -16,7 +15,6 @@
         @extend %transition;
         position: relative;
         display: block;
-		margin: -55px 0;
         min-width: 220px;
         max-width: 220px;
         opacity: 0.5;
@@ -32,13 +30,14 @@
             width: 100%;
             z-index: 1;
         }
-	}
+    }
 	.social {
         display: flex;
-        align-items: center;
-		justify-content: center;
-		flex-wrap: wrap;
-        text-align: center;
+        align-content: flex-start;
+        align-items: flex-start;
+        justify-content: flex-end;
+        text-align: right;
+        flex-wrap: wrap;
         font-family: $heading-font;
         a {
             @extend %transition;
@@ -66,18 +65,17 @@
         display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		margin-left: -$pad/4;
 		margin-bottom: 20px;
         a {
             @extend %transition;
-			position: relative;
+            position: relative;
             display: inline-block;
             color: #FFF;
             padding: $pad/8 $pad/4;
             text-decoration: none;
             text-align: center;
             font-family: $heading-font;
-            font-size: 1.5em;
+            font-size: 1.4em;
             outline: none;
             &:hover, &:focus {
                 transform: scale(1.08);
@@ -108,11 +106,23 @@
     }
 }
 
+@media (min-width: 721px) {
+    .footer {
+        .social, .footer-nav {
+            width: 25%;
+        }
+        .footer-nav {
+            margin-left: -$pad/4;
+        }
+    }
+}
+
 @media (max-width: 720px) {
     .footer {
         text-align: center;
         footer {
             flex-direction: column;
+            padding: $mobile-pad/2 15px;
         }
         .logo {
             margin: 0 auto $mobile-pad/2;
@@ -128,7 +138,8 @@
         }
         .social {
             margin-bottom: $mobile-pad/2;
-            order: 1;
+            text-align: center;
+            justify-content: center;
             a {
                 padding-top: 5px;
                 padding-bottom: 5px;

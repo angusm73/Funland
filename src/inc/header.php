@@ -80,10 +80,10 @@
                     </a>
                 </div>
                 <nav class="main-nav">
-                    <a href="/about" id="hAboutLink" title="See who we are + what we have to offer"<?= ($page_id == 3 ? ' class="active"' : '') ?>><span>About Us</span></a>
-                    <a href="/attractions" id="hAttractionsLink" title="View our great value rides + attractions"<?= ($page_id == 2 ? ' class="active"' : '') ?>><span>Attractions</span></a>
-                    <a href="/parties" id="hPartyLink" title="Info about our parties" <?= ($page_id == 4 ? ' class="active"' : '') ?>><span>Parties</span></a>
-                    <a href="/contact" id="hContactLink" title="Get in touch via phone, email or drop into the box" <?= ($page_id == 5 ? ' class="active"' : '') ?>><span>Contact</span></a>
+                    <a href="/about" id="hAboutLink" title="See who we are + what we have to offer"<?= ($page_id == 3 ? ' class="active"' : '') ?>>About Us</a>
+                    <a href="/attractions" id="hAttractionsLink" title="View our great value rides + attractions"<?= ($page_id == 2 ? ' class="active"' : '') ?>>Attractions</a>
+                    <a href="/parties" id="hPartyLink" title="Info about our parties" <?= ($page_id == 4 ? ' class="active"' : '') ?>>Parties</a>
+                    <a href="/contact" id="hContactLink" title="Get in touch via phone, email or drop into the box" <?= ($page_id == 5 ? ' class="active"' : '') ?>>Contact</a>
                 </nav>
             </div>
         </header>
