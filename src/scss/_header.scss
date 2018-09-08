@@ -10,6 +10,7 @@
         color: $yellow;
 		align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
 	}
 	.logo {
         position: relative;
@@ -44,7 +45,7 @@
             display: inline-block;
             padding: 16px 12px;
             color: #FFF;
-            font-size: 1.5em;
+            font-size: 1.6em;
             text-decoration: none;
             &:hover, &:focus {
                 color: #FFF;
@@ -60,18 +61,19 @@
     }
     .main-nav {
         display: flex;
+        width: 100%;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-end;
         a {
             @extend %transition;
             position: relative;
             display: inline-block;
             color: #FFF;
-            padding: $pad/8 $pad/4;
+            padding: $pad/8 $pad/6;
             text-decoration: none;
             text-align: center;
             font-family: $heading-font;
-            font-size: 1.7em;
+            font-size: 1.4em;
             outline: none;
             &:hover, &:focus {
                 transform: scale(1.08);
