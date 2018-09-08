@@ -194,7 +194,7 @@ var FrontEnd = function () {
                 timer = setInterval(function () {
                     showSlide(slide_counter % items.length);
                     slide_counter++;
-                }, 3000);
+                }, 4000);
             };
             var stop_timer = function stop_timer() {
                 clearInterval(timer);

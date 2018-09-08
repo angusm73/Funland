@@ -183,7 +183,7 @@ class FrontEnd {
             timer = setInterval(() => {
                 showSlide(slide_counter % items.length)
                 slide_counter++
-            }, 3000)
+            }, 4000)
         }
         let stop_timer = () => {
             clearInterval(timer)
