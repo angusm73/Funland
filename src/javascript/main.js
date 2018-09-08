@@ -176,53 +176,57 @@ class FrontEnd {
     }
 
     initHero() {
-        let slide_counter = 0
-        let timer
-        let start_timer = () => {
-            stop_timer()
-            timer = setInterval(() => {
-                showSlide(slide_counter % items.length)
-                slide_counter++
-            }, 4000)
-        }
-        let stop_timer = () => {
-            clearInterval(timer)
-        }
-        let showSlide = (index) => {
-            items.forEach(item => {
-                const active = item.item == items[index].item
-                item.item.style.display = active ? 'block' : 'none'
-                if (active) {
-                    item.label.classList.add('active')
-                    if (item.item.classList.contains('laser-gun')) {
-                        setTimeout(this.shootLaser, 360)
-                    } else {
-                        this.killLaser()
-                    }
-                } else {
-                    item.label.classList.remove('active')
-                }
-            })
-        }
-        const items = Array.from(document.querySelectorAll('.hero [data-item]')).map((i, x) => {
-            i.addEventListener('mouseenter', () => {
-                stop_timer()
-                showSlide.call(this, x)
-                slide_counter = x + 1
-            })
-            i.addEventListener('touchstart', () => {
-                stop_timer()
-                showSlide.call(this, x)
-                slide_counter = x + 1
-                setTimeout(start_timer, 2000)
-            })
-            i.addEventListener('mouseleave', start_timer)
+        this.hero_items = Array.from(document.querySelectorAll('.hero [data-item]')).map((i, x) => {
             return {
                 label: i,
                 item: document.querySelector('.hero .' + i.getAttribute('data-item'))
             }
         })
-        start_timer()
+        this.hero_items.map((i, x) => {
+            i.label.addEventListener('mouseenter', () => {
+                this.stopHeroTimer()
+                this.showHeroSlide(x)
+                this.slide_counter = x + 1
+            })
+            i.label.addEventListener('touchstart', () => {
+                this.stopHeroTimer()
+                this.showHeroSlide(x)
+                this.slide_counter = x + 1
+                setTimeout(this.startHeroTimer.bind(this), 2000)
+            })
+            i.label.addEventListener('mouseleave', this.startHeroTimer.bind(this))
+        })
+        this.startHeroTimer()
+    }
+
+    startHeroTimer() {
+        this.stopHeroTimer()
+        this.slide_counter = 0
+        this.timer = setInterval(() => {
+            this.showHeroSlide(this.slide_counter % this.hero_items.length)
+            this.slide_counter++
+        }, 4000)
+    }
+
+    stopHeroTimer() {
+        clearTimeout(this.timer)
+    }
+
+    showHeroSlide(index) {
+        this.hero_items.forEach(item => {
+            const active = item.item == this.hero_items[index].item
+            item.item.style.display = active ? 'block' : 'none'
+            if (active) {
+                item.label.classList.add('active')
+                if (item.item.classList.contains('laser-gun')) {
+                    setTimeout(this.shootLaser, 360)
+                } else {
+                    this.killLaser()
+                }
+            } else {
+                item.label.classList.remove('active')
+            }
+        })
     }
 
     shootLaser() {
@@ -237,27 +241,12 @@ class FrontEnd {
         laser.style.top = nob_offset.top + window.scrollY + 15 + 'px'
         laser.style.left = nob_offset.left + window.scrollX + 15 + 'px'
     }
+
     killLaser() {
         let laser = document.querySelector('.laser-glow')
         if (laser) {
             laser.parentNode.removeChild(laser)
         }
-    }
-
-    initGame() {
-        const content = document.querySelectorAll('body > .sw')
-        content.forEach((row, i) => {
-            setTimeout(() => {
-                row.firstElementChild.classList.add('fall')
-            }, i * 600)
-        })
-    }
-
-    stopGame() {
-        const content = document.querySelectorAll('body > .sw')
-        content.forEach(row => {
-            row.firstElementChild.classList.remove('fall')
-        })
     }
 }
 

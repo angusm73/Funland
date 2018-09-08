@@ -187,53 +187,64 @@ var FrontEnd = function () {
         value: function initHero() {
             var _this3 = this;
 
-            var slide_counter = 0;
-            var timer = void 0;
-            var start_timer = function start_timer() {
-                stop_timer();
-                timer = setInterval(function () {
-                    showSlide(slide_counter % items.length);
-                    slide_counter++;
-                }, 4000);
-            };
-            var stop_timer = function stop_timer() {
-                clearInterval(timer);
-            };
-            var showSlide = function showSlide(index) {
-                items.forEach(function (item) {
-                    var active = item.item == items[index].item;
-                    item.item.style.display = active ? 'block' : 'none';
-                    if (active) {
-                        item.label.classList.add('active');
-                        if (item.item.classList.contains('laser-gun')) {
-                            setTimeout(_this3.shootLaser, 360);
-                        } else {
-                            _this3.killLaser();
-                        }
-                    } else {
-                        item.label.classList.remove('active');
-                    }
-                });
-            };
-            var items = Array.from(document.querySelectorAll('.hero [data-item]')).map(function (i, x) {
-                i.addEventListener('mouseenter', function () {
-                    stop_timer();
-                    showSlide.call(_this3, x);
-                    slide_counter = x + 1;
-                });
-                i.addEventListener('touchstart', function () {
-                    stop_timer();
-                    showSlide.call(_this3, x);
-                    slide_counter = x + 1;
-                    setTimeout(start_timer, 2000);
-                });
-                i.addEventListener('mouseleave', start_timer);
+            this.hero_items = Array.from(document.querySelectorAll('.hero [data-item]')).map(function (i, x) {
                 return {
                     label: i,
                     item: document.querySelector('.hero .' + i.getAttribute('data-item'))
                 };
             });
-            start_timer();
+            this.hero_items.map(function (i, x) {
+                i.label.addEventListener('mouseenter', function () {
+                    _this3.stopHeroTimer();
+                    _this3.showHeroSlide(x);
+                    _this3.slide_counter = x + 1;
+                });
+                i.label.addEventListener('touchstart', function () {
+                    _this3.stopHeroTimer();
+                    _this3.showHeroSlide(x);
+                    _this3.slide_counter = x + 1;
+                    setTimeout(_this3.startHeroTimer.bind(_this3), 2000);
+                });
+                i.label.addEventListener('mouseleave', _this3.startHeroTimer.bind(_this3));
+            });
+            this.startHeroTimer();
+        }
+    }, {
+        key: 'startHeroTimer',
+        value: function startHeroTimer() {
+            var _this4 = this;
+
+            this.stopHeroTimer();
+            this.slide_counter = 0;
+            this.timer = setInterval(function () {
+                _this4.showHeroSlide(_this4.slide_counter % _this4.hero_items.length);
+                _this4.slide_counter++;
+            }, 4000);
+        }
+    }, {
+        key: 'stopHeroTimer',
+        value: function stopHeroTimer() {
+            clearTimeout(this.timer);
+        }
+    }, {
+        key: 'showHeroSlide',
+        value: function showHeroSlide(index) {
+            var _this5 = this;
+
+            this.hero_items.forEach(function (item) {
+                var active = item.item == _this5.hero_items[index].item;
+                item.item.style.display = active ? 'block' : 'none';
+                if (active) {
+                    item.label.classList.add('active');
+                    if (item.item.classList.contains('laser-gun')) {
+                        setTimeout(_this5.shootLaser, 360);
+                    } else {
+                        _this5.killLaser();
+                    }
+                } else {
+                    item.label.classList.remove('active');
+                }
+            });
         }
     }, {
         key: 'shootLaser',
@@ -256,24 +267,6 @@ var FrontEnd = function () {
             if (laser) {
                 laser.parentNode.removeChild(laser);
             }
-        }
-    }, {
-        key: 'initGame',
-        value: function initGame() {
-            var content = document.querySelectorAll('body > .sw');
-            content.forEach(function (row, i) {
-                setTimeout(function () {
-                    row.firstElementChild.classList.add('fall');
-                }, i * 600);
-            });
-        }
-    }, {
-        key: 'stopGame',
-        value: function stopGame() {
-            var content = document.querySelectorAll('body > .sw');
-            content.forEach(function (row) {
-                row.firstElementChild.classList.remove('fall');
-            });
         }
     }]);
 

@@ -35,6 +35,8 @@ var Game = function () {
 		value: function initGame() {
 			var _this = this;
 
+			window.front_end.killLaser();
+			window.front_end.stopHeroTimer();
 			this.body_content.forEach(function (row, i) {
 				setTimeout(function () {
 					row.firstElementChild.classList.add('fall');
@@ -138,6 +140,7 @@ var Game = function () {
 			this.background.parentNode.removeChild(this.background);
 			delete this.background;
 			this.initBackground();
+			window.front_end.startHeroTimer();
 		}
 	}, {
 		key: 'initBackground',

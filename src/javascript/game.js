@@ -18,6 +18,8 @@ class Game {
 	}
 
 	initGame() {
+		window.front_end.killLaser()
+		window.front_end.stopHeroTimer()
 		this.body_content.forEach((row, i) => {
 			setTimeout(() => {
 				row.firstElementChild.classList.add('fall')
@@ -107,6 +109,7 @@ class Game {
 		this.background.parentNode.removeChild(this.background)
 		delete this.background
 		this.initBackground()
+		window.front_end.startHeroTimer()
 	}
 
 	initBackground() {
