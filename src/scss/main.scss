@@ -340,6 +340,7 @@ select.form-control {
         line-height: 1;
         span {
             @extend %transition;
+            display: inline-block;
             cursor: default;
             &.active {
                 color: lighten($yellow, 25%);
@@ -372,22 +373,33 @@ select.form-control {
         }
     }
     @media (min-width: 701px) and (max-width: 1000px) {
-        padding-bottom: 160px;
+        padding-top: 120px;
+        padding-bottom: 320px;
+        svg:not(.australia) {
+            bottom: 80px;
+        }
     }
     @media (min-width: 501px) and (max-width: 700px) {
         padding-top: $pad;
-        padding-bottom: $pad*2;
+        padding-bottom: $pad*3;
         svg:not(.australia) {
+            bottom: $pad;
+            right: 20px;
             width: 200px;
             height: 200px;
         }
     }
     @media (max-width: 500px) {
         padding-top: $mobile-pad;
-        padding-bottom: 240px;
+        padding-bottom: 160px;
         svg:not(.australia) {
+            bottom: 20px;
+            right: 20px;
             width: 160px;
             height: 160px;
+        }
+        .btn {
+            min-width: 0;
         }
     }
 }

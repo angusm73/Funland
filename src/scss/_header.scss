@@ -190,7 +190,12 @@
 }
 
 @media (max-width: 450px) {
-    .header .social .phone {
-        display: none;
+    .header {
+        .main-nav a {
+            padding: 10px;
+        }
+        .social .phone {
+            display: none;
+        }
     }
 }
