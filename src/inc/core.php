@@ -13,7 +13,7 @@ session_start();
 $_SESSION['csrf_token'] = md5(session_id() . date('d'));
 
 // /* Connect to MySQL server */
-// $dbc = new mysqli($env['db_host'], $env['db_user'], $env['db_pass'], "crossfit_huey");
+// $dbc = new mysqli($env['db_host'], $env['db_user'], $env['db_pass'], "funland");
 
 // if (mysqli_connect_errno()) {
 //     echo "MySQL connection error: " . mysqli_connect_error();
