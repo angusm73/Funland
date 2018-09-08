@@ -234,8 +234,8 @@ class FrontEnd {
             laser.classList.add('laser-glow')
             document.body.appendChild(laser)
         }
-        laser.style.top = nob_offset.top + 15 + 'px'
-        laser.style.left = nob_offset.left + 15 + 'px'
+        laser.style.top = nob_offset.top + window.scrollY + 15 + 'px'
+        laser.style.left = nob_offset.left + window.scrollX + 15 + 'px'
     }
     killLaser() {
         let laser = document.querySelector('.laser-glow')
