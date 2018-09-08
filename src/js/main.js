@@ -190,6 +190,7 @@ var FrontEnd = function () {
             var slide_counter = 0;
             var timer = void 0;
             var start_timer = function start_timer() {
+                stop_timer();
                 timer = setInterval(function () {
                     showSlide(slide_counter % items.length);
                     slide_counter++;

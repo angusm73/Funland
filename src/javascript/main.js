@@ -179,6 +179,7 @@ class FrontEnd {
         let slide_counter = 0
         let timer
         let start_timer = () => {
+            stop_timer()
             timer = setInterval(() => {
                 showSlide(slide_counter % items.length)
                 slide_counter++
