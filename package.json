@@ -23,6 +23,7 @@
 		"gulp-sourcemaps": "^2.6.4"
 	},
 	"dependencies": {
+		"@google/markerclusterer": "^1.0.3",
 		"axios": "^0.18.0"
 	}
 }

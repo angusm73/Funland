@@ -5,24 +5,34 @@
     z-index: 1;
 	footer {
         display: flex;
+        align-items: center;
         padding: 40px;
         background: darken($purple, 10%);
         color: $yellow;
 		justify-content: space-between;
 		flex-wrap: wrap;
-	}
+    }
+    .footer-main {
+        box-sizing: border-box;
+    }
 	.logo {
         @extend %transition;
         position: relative;
-        display: block;
-        min-width: 220px;
-        max-width: 220px;
-        opacity: 0.5;
-        &:hover {
-            opacity: 0.8;
-        }
-        &:active {
-            opacity: 1;
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 50px;
+        padding-left: 20px;
+        > a {
+            display: block;
+            width: 50%;
+            max-width: 220px;
+            margin-right: 5%;
+            &:hover {
+                opacity: 0.8;
+            }
+            &:active {
+                opacity: 1;
+            }
         }
 		img {
             position: relative;
@@ -35,16 +45,16 @@
         display: flex;
         align-content: flex-start;
         align-items: flex-start;
-        justify-content: flex-end;
-        text-align: right;
+        justify-content: flex-start;
         flex-wrap: wrap;
         font-family: $heading-font;
         a {
             @extend %transition;
             display: inline-block;
-            padding: 16px 12px;
+            padding: 5px 5px;
             color: #FFF;
             font-size: 1.5em;
+            line-height: 0.75;
             text-decoration: none;
             &:hover, &:focus {
                 color: #FFF;
@@ -59,19 +69,21 @@
                 min-width: 28px;
                 max-width: 28px;
             }
+            &.phone {
+                padding: 10px 10px;
+            }
         }
 	}
 	.footer-nav {
         display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		margin-bottom: 20px;
+        flex-wrap: wrap;
+		margin-bottom: 40px;
         a {
             @extend %transition;
             position: relative;
             display: inline-block;
             color: #FFF;
-            padding: $pad/8 $pad/4;
+            padding: $pad/8 $pad/6;
             text-decoration: none;
             text-align: center;
             font-family: $heading-font;
@@ -101,18 +113,39 @@
 }
 
 @media (min-width: 1281px) {
+    .footer {
+        footer {
+            margin: 0 -40px;
+            padding-left: calc(5% + 40px);
+            padding-right: calc(5% + 40px);
+        }
+        .logo > a {
+            margin-right: 60px;
+        }
+    }
+}
+
+@media (max-width: 900px) {
     .footer footer {
-        margin: 0 -40px;
+        padding: $mobile-pad/2 5%;
+    }
+}
+@media (max-width: 800px) {
+    .footer .social a:not(.phone) {
+        padding: 2px 4px;
     }
 }
 
 @media (min-width: 721px) {
     .footer {
-        .social, .footer-nav {
-            width: 25%;
-        }
-        .footer-nav {
+        .footer-main {
             margin-left: -$pad/4;
+            width: 55%;
+            padding-right: 30px;
+        }
+        .fb-page {
+            width: 45%;
+            margin-bottom: -1.65em;
         }
     }
 }
@@ -122,7 +155,6 @@
         text-align: center;
         footer {
             flex-direction: column;
-            padding: $mobile-pad/2 15px;
         }
         .logo {
             margin: 0 auto $mobile-pad/2;
@@ -138,13 +170,15 @@
             }
         }
         .social {
-            margin-bottom: $mobile-pad/2;
-            text-align: center;
-            justify-content: center;
+            text-align: left;
             a {
                 padding-top: 5px;
                 padding-bottom: 5px;
             }
+        }
+        .fb-page {
+            margin-bottom: $mobile-pad/2;
+            width: 100%;
         }
         .copyright {
             order: 2;

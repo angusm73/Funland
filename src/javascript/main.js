@@ -124,10 +124,11 @@ class FrontEnd {
         }
         const marker_bg = {
             url: '/img/home/map-marker.png',
-            labelOrigin: { x: 60, y: 80 },
-            scaledSize: new google.maps.Size(60, 60)
+            labelOrigin: { x: 70, y: 152 },
+            scaledSize: new google.maps.Size(24, 48)
         }
-        const map_style = [{ "elementType": "geometry", "stylers": [{ "color": "#2a0a2e" }] }, { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }, { "visibility": "simplified" }] }, { "elementType": "labels.text.stroke", "stylers": [{ "color": "#b885c5" }] }, { "featureType": "administrative.land_parcel", "elementType": "labels.text.fill", "stylers": [{ "color": "#bdbdbd" }] }, { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#2a0a2e" }, { "visibility": "simplified" }] }, { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#2a0a2e" }] }, { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#501458" }, { "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }, { "visibility": "simplified" }] }, { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#6c1a78" }] }, { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] }, { "featureType": "road.local", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "transit.line", "elementType": "geometry", "stylers": [{ "color": "#e5e5e5" }] }, { "featureType": "transit.station", "elementType": "geometry", "stylers": [{ "color": "#eeeeee" }] }, { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#501458" }] }, { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }]
+        // const map_style = [{ "elementType": "geometry", "stylers": [{ "color": "#073532" }] }, { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }, { "visibility": "simplified" }] }, { "elementType": "labels.text.stroke", "stylers": [{ "color": "#ABF2EC" }] }, { "featureType": "administrative.land_parcel", "elementType": "labels.text.fill", "stylers": [{ "color": "#bdbdbd" }] }, { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#073532" }, { "visibility": "simplified" }] }, { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#073532" }] }, { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#0a4944" }, { "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }, { "visibility": "simplified" }] }, { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#0a4944" }] }, { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] }, { "featureType": "road.local", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "transit.line", "elementType": "geometry", "stylers": [{ "color": "#052724" }] }, { "featureType": "transit.station", "elementType": "geometry", "stylers": [{ "color": "#073532" }] }, { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#15A095" }] }, { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }]
+        const map_style = [{ "elementType": "geometry", "stylers": [{ "color": "#2a0a2e" }] }, { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }, { "visibility": "simplified" }] }, { "elementType": "labels.text.stroke", "stylers": [{ "color": "#b885c5" }] }, { "featureType": "administrative.land_parcel", "elementType": "labels.text.fill", "stylers": [{ "color": "#bdbdbd" }] }, { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#2a0a2e" }, { "visibility": "simplified" }] }, { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#2a0a2e" }] }, { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#501458" }, { "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }, { "visibility": "simplified" }] }, { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#6c1a78" }] }, { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] }, { "featureType": "road.local", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "transit.line", "elementType": "geometry", "stylers": [{ "color": "#501458" }] }, { "featureType": "transit.station", "elementType": "geometry", "stylers": [{ "color": "#501458" }] }, { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#501458" }] }, { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }]
         const infowindow = new google.maps.InfoWindow()
         this.map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: -33.182211, lng: 150.474110 },
@@ -138,26 +139,32 @@ class FrontEnd {
         this.markers = [
             {
                 title: 'Ulladulla',
+                location: 'Princes Highway,\n Ulladulla NSW 2539',
                 position: { lat: -35.357570, lng: 150.473500 }
             },
             {
                 title: 'Bankstown',
+                location: 'Street Name,\n Bankstown NSW 2539',
                 position: { lat: -33.913160, lng: 151.034670 }
             },
             {
                 title: 'Lidcombe',
+                location: 'Street Name,\n Lidcombe NSW 2539',
                 position: { lat: -33.864690, lng: 151.043630 }
             },
             {
                 title: 'Jervis Bay',
+                location: 'Street Name,\n Jervis Bay NSW 2539',
                 position: { lat: -35.140020, lng: 150.728240 }
             },
             {
                 title: 'Mt Prichard',
+                location: 'Street Name,\n Mt Prichard NSW 2539',
                 position: { lat: -33.902250, lng: 150.896850 }
             },
             {
                 title: 'Port Maquarie',
+                location: 'Street Name,\n Port Maquarie NSW 2539',
                 position: { lat: -31.430700, lng: 152.906330 }
             }
         ].map(location => {
@@ -168,11 +175,15 @@ class FrontEnd {
                 icon: marker_bg
             })
             marker.addListener('mouseover', () => {
-                infowindow.setContent('<span class="title">' + location.title + '</span>')
+                infowindow.setContent('<span class="title">' + location.title + '</span><p class="location">' + location.location.replace(/\n/g, '<br>') + '</p><a href="/locations/' + location.title.toLowerCase().replace(/ +/g, '') + '" class="btn small">View More</a>')
                 infowindow.open(this.map, marker)
             })
             return marker
         })
+        this.marker_cluster = new MarkerClusterer(this.map, this.markers, {
+            gridSize: 20,
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        });
     }
 
     initHero() {

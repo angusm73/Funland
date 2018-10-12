@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>CrossFit Huey</title>
+	<link rel="stylesheet" href="./css/main.css">
+	<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+	<link rel="manifest" href="./site.webmanifest">
+	<link rel="mask-icon" href="./safari-pinned-tab.svg" color="#138771">
+	<meta name="apple-mobile-web-app-title" content="CrossFit Huey">
+	<meta name="application-name" content="CrossFit Huey">
+	<meta name="msapplication-TileColor" content="#2c3539">
+	<meta name="theme-color" content="#2c3539">
+</head>
+
+<body>
+	<!-- HEADER -->
+	<div class="header">
+		<header>
+			<a href="/" class="logo">
+				<img src="/img/crossfit-huey-logo.svg" alt="CrossFit Huey">
+			</a>
+			<nav class="main-nav">
+				<a href="/about.html" title="See who we are + what we have to offer" id="hAboutLink">
+					<span>About</span>
+					<span class="help-text">Who + What</span>
+				</a>
+				<a href="/timetable.html" title="See our timetable, book a class today" id="hTimetableLink">
+					<span>Timetable</span>
+					<span class="help-text">What's going on</span>
+				</a>
+				<a href="/contact.html" title="Get in touch via phone, email or drop into the box" id="hContactLink">
+					<span>Contact</span>
+					<span class="help-text">Get in touch</span>
+				</a>
+			</nav>
+			<div class="cta-wrapper">
+				<button class="btn join-now" id="hCtaButton">Join Now!</button>
+				<span id="hCtaSubheading">or call</span>
+				<a href="tel:0412345678" id="hCtaNumber">0412 345 678</a>
+			</div>
+		</header>
+	</div>
+
+	<!-- HERO -->
+	<div class="hero">
+		<div class="swf centered">
+			<div class="info">
+				<h1 id="heroTitle">Video Title</h1>
+				<p id="heroDescription">Description... Stoked crooked grind frigid air hospital flip lien air nose egg plant. Wheels heel flip skate or die boardslide
+					method air nose bump air Steve Alba. Fast plant baseplate crooked grind gap full-cab Chris Pastras melancholy impossible.</p>
+				<a href="#" class="btn" id="heroCtaButton">Call to action</a>
+			</div>
+			<div class="video">
+				<div class="responsive-frame">
+					<iframe width="720" height="405" src="https://www.youtube.com/embed/tzD9BkXGJ1M" frameborder="0" allow="autoplay; encrypted-media"
+					 title="Welcome to CrossFit Huey!" allowfullscreen></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- CALL TO ACTION -->
+	<div class="cta">
+		<div class="swf centered">
+			<h2 id="ctaHeading">Special Offer!
+				<span>2 weeks for $1</span>
+			</h2>
+			<a href="#" class="btn" id="ctaButton">I'm interested</a>
+		</div>
+	</div>
+
+	<!-- CROSSFIT JOURNAL -->
+	<div class="cfj">
+		<div class="swf centered">
+			<a href="#">
+				<img src="/img/crossfit-journal.png" alt="CrossFit Journal">
+			</a>
+			<div class="about">
+				<h3 id="journalTitle">About the CrossFit Journal</h3>
+				<p id="journalDescription">Deck sketchy slam varial smith grind. Ollie hole hurricane pool wall ride disaster. Face plant Love Bowl spine Japan
+					air durometer coper. Carve no comply Kevin Jarvis nose blunt nosepicker slap maxwell.</p>
+			</div>
+			<a href="#" class="link" id="journalLink">Visit Journal</a>
+		</div>
+	</div>
+
+	<!-- ABOUT GYM -->
+	<div class="about two-col">
+		<div class="info">
+			<div class="inner">
+				<h2 id="aboutTitle">About the Gym</h2>
+				<p id="aboutDescription">Front foot impossible snake smith grind backside. Primo slide ledge blunt tail. Freestyle Girl pivot sponsored sketchy.
+					Fastplant full pipe wax Neal Hendrix pump. Gnarly backside kickturn 1080. Steve Rocco downhill body varial impossible
+					backside. Camel back freestyle nosegrind slap maxwell.</p>
+			</div>
+		</div>
+		<div class="img-wrap">
+			<img src="/img/gym-photo.jpg" alt="Gym photo">
+		</div>
+	</div>
+
+	<!-- MAP -->
+	<div class="map two-col">
+		<div id="map"></div>
+		<div class="info">
+			<div class="inner">
+				<h2 id="mapTitle">Where to find us!</h2>
+				<p id="mapLocation">123 Street Name
+					<br> Ulladulla, NSW 2539</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- FOOTER -->
+	<div class="footer">
+		<nav class="footer-nav swf centered">
+			<a href="/" title="Go to CrossFit Huey Home Page" id="fHomeLink">Home</a>
+			<a href="#" target="_blank" title="Visit the CrossFit Journal" id="fJournalLink">Journal</a>
+			<a href="/about.html" title="Check out who we are + what we have to offer" id="fAboutLink">About</a>
+			<a href="/timetable.html" title="See our timetable, book a class today" id="fTimetableLink">Timetable</a>
+			<a href="/contact.html" title="Get in touch via phone, email or drop into the box" id="fContactLink">Contact</a>
+		</nav>
+	</div>
+	<footer class="footer swf centered">
+		<p>&copy; 2018 CrossFit Huey &middot;
+			<a href="#">Terms &amp; Conditions</a> &middot;
+			<a href="#">Privacy Policy</a>
+		</p>
+		<p>
+			Website proudly hand crafted by Angus Moore
+		</p>
+	</footer>
+
+	<script src="../node_modules/axios/dist/axios.min.js"></script>
+	<script src="./js/main.js"></script>
+	<script src="./js/admin.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmOcYc3H9bIF5K2wqOI1rQShDiHL3rFtI&callback=front_end.initMap"
+	 async defer></script>
+</body>
+
+</html>

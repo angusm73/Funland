@@ -34,8 +34,7 @@ require "./inc/header.php";?>
         </div>
         <div class="actions">
             <a href="/parties" class="btn">Book now</a>
-            <span>or call</span>
-            <a href="tel:0244543220">(02) 4454 3220</a>
+            <a href="tel:0244543220"><?php echo file_get_contents("$_SERVER[DOCUMENT_ROOT]/img/phone.svg"); ?> 4454 3220</a>
         </div>
     </div>
 </div>
@@ -50,31 +49,39 @@ require "./inc/header.php";?>
 <div class="sw p-0">
     <div class="more-attractions">
         <h2>Attractions</h2>
-        <a href="/attractions" class="view-all">view all rides, games &amp; activities</a>
         <div class="attraction">
-            <img src="/img/home/laser-tag.jpg" alt="Laser Tag">
-            <h3>Laser Tag</h3>
+            <a href="/attractions/laser-tag" class="img-wrapper">
+                <img src="/img/home/laser-tag.jpg" alt="Laser Tag">
+            </a>
+            <h3><a href="/attractions/laser-tag">Laser Tag</a></h3>
             <p>Funland has one of the best multi level laser arenas in the country.
                 We know you’ll enjoy our Laser challenge.</p>
         </div>
         <div class="attraction">
-            <img src="/img/home/dodgems.jpg" alt="Dodgems">
-            <h3>Dodgems</h3>
+            <a href="/attractions/dodgems" class="img-wrapper">
+                <img src="/img/home/dodgems.jpg" alt="Dodgems">
+            </a>
+            <h3><a href="/attractions/dodgems">Dodgems</a></h3>
             <p>The latest cars with great music – the Fun never stops as you race
                 around the track, avoiding the others for the fastest ride.</p>
         </div>
         <div class="attraction">
-            <img src="/img/home/arcade-games.jpg" alt="Arcade Games">
-            <h3>Arcade Games</h3>
+            <a href="/attractions/arcade-games" class="img-wrapper">
+                <img src="/img/home/arcade-games.jpg" alt="Arcade Games">
+            </a>
+            <h3><a href="/attractions/arcade-games">Arcade Games</a></h3>
             <p>Driving, bowling, shooting, token, skill, prize, redemption, pinball,
                 crane, dedicated and video games. We have them all!</p>
         </div>
         <div class="attraction">
-            <img src="/img/home/jump-star-drop-ride.jpg" alt="Jumping Star">
-            <h3>Star Jump</h3>
+            <a href="/attractions/jump-star" class="img-wrapper">
+                <img src="/img/home/jump-star-drop-ride.jpg" alt="Jumping Star">
+            </a>
+            <h3><a href="/attractions/jump-star">Star Jump</a></h3>
             <p>This full size drop ride will thrill the kids as it takes them up
                 more than two storeys then drops and bounces them up and down.</p>
         </div>
+        <a href="/attractions" class="view-all" data-hover="view all rides, games &amp; activities"><span>view all rides, games &amp; activities</span></a>
     </div>
 </div>
 

@@ -130,7 +130,7 @@ var Game = function () {
 		key: 'finishGame',
 		value: function finishGame() {
 			document.body.classList.remove('gamemode');
-			document.body.removeEventListener("touchmove", this._preventScroll, false);
+			document.body.removeEventListener('touchmove', this._preventScroll, false);
 			if (this.win_screen) {
 				this.win_screen.parentNode.removeChild(this.win_screen);
 			}
@@ -346,11 +346,11 @@ var Player = function (_GameObject2) {
 		value: function init() {
 			var _this8 = this;
 
-			this.background.addEventListener("touchstart", this.touchMove.bind(this), false);
-			this.background.addEventListener("touchmove", this.touchMove.bind(this), false);
-			this.background.addEventListener("touchend", this.touchEnd.bind(this), false);
-			this.background.addEventListener("keydown", this.keyDown.bind(this), false);
-			this.background.addEventListener("keyup", this.keyUp.bind(this), false);
+			this.background.addEventListener('touchstart', this.touchMove.bind(this), false);
+			this.background.addEventListener('touchmove', this.touchMove.bind(this), false);
+			this.background.addEventListener('touchend', this.touchEnd.bind(this), false);
+			this.background.addEventListener('keydown', this.keyDown.bind(this), false);
+			this.background.addEventListener('keyup', this.keyUp.bind(this), false);
 			this.timer = setInterval(function () {
 				_this8.move().render();
 				_this8.bullets.map(function (b) {
@@ -363,11 +363,11 @@ var Player = function (_GameObject2) {
 		value: function destroy() {
 			_get(Player.prototype.__proto__ || Object.getPrototypeOf(Player.prototype), 'destroy', this).call(this);
 			clearInterval(this.timer);
-			this.background.removeEventListener("touchstart", this.touchMove.bind(this), false);
-			this.background.removeEventListener("touchmove", this.touchMove.bind(this), false);
-			this.background.removeEventListener("touchend", this.touchEnd.bind(this), false);
-			this.background.removeEventListener("keydown", this.keyDown.bind(this), false);
-			this.background.removeEventListener("keyup", this.keyUp.bind(this), false);
+			this.background.removeEventListener('touchstart', this.touchMove.bind(this), false);
+			this.background.removeEventListener('touchmove', this.touchMove.bind(this), false);
+			this.background.removeEventListener('touchend', this.touchEnd.bind(this), false);
+			this.background.removeEventListener('keydown', this.keyDown.bind(this), false);
+			this.background.removeEventListener('keyup', this.keyUp.bind(this), false);
 			this.bullets.map(function (b) {
 				return b.destroy();
 			});

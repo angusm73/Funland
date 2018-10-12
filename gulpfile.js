@@ -37,6 +37,8 @@ gulp.task('sass', function () {
 gulp.task('js', function () {
     gulp.src('node_modules/axios/dist/*')
         .pipe(gulp.dest('src/js/libs/axios/'));
+    gulp.src('node_modules/@google/markerclusterer/src/*')
+        .pipe(gulp.dest('src/js/libs/maps/'));
     return gulp.src('src/javascript/*.js')
         .pipe(sourcemaps.init())
         .pipe(babel({

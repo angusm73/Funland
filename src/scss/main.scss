@@ -264,6 +264,7 @@ select.form-control {
     color: darken($pink, 30%);
     user-select: none;
     box-shadow: 10px 10px 20px darken($pink, 20%);
+    will-change: auto;
     &::before {
         @extend %transition;
         background: darken($pink, 8%)!important;
@@ -291,6 +292,24 @@ select.form-control {
         opacity: 0.8;
         pointer-events: none;
     }
+    &.small {
+        @include box-element(5px);
+        min-width: 0;
+        font-size: 1em;
+        box-shadow: 5px 5px 15px darken($pink, 20%);
+        &:hover {
+            @include box-element(8px);
+            top: -3px;
+            left: -3px;
+            box-shadow: 10px 10px 25px darken($pink, 20%);
+        }
+        &:active {
+            @include box-element(2px);
+            top: 3px;
+            left: 3px;
+            box-shadow: 2px 2px 10px darken($pink, 20%);
+        }
+    }
 }
 
 /* --- AUDIO CONTROLS --- */
@@ -309,7 +328,7 @@ select.form-control {
 /* --- HERO --- */
 .hero {
     position: relative;
-    padding: 240px 40px;
+    padding: 240px 5%;
     background: darken($yellow, 15%);
     color: darken($yellow, 40%);
     overflow: hidden;
@@ -407,7 +426,7 @@ select.form-control {
 /* --- CTA ROW --- */
 .cta-row {
     position: relative;
-    padding: $pad $pad/2;
+    padding: $pad 5%;
     background: darken($cyan, 10%);
     color: darken($cyan, 34%);
     display: flex;
@@ -440,6 +459,12 @@ select.form-control {
             font-family: $heading-font;
             font-size: 1.5em;
             color: inherit;
+        }
+        svg {
+            width: 36px;
+            height: 36px;
+            margin-right: -4px;
+            vertical-align: middle;
         }
     }
     .btn {
@@ -483,7 +508,7 @@ select.form-control {
     h2 {
         position: absolute;
         top: 80px;
-        left: 40px;
+        left: 5%;
         z-index: 10;
     }
 }
@@ -493,13 +518,58 @@ select.form-control {
     height: 680px;
     max-height: 70vh;
 }
-.gm-style-iw {
-    .title {
-        margin-top: .2em;
-        margin-bottom: 0;
-        font-size: 1.4em;
-        font-weight: 700;
-        color: #111;
+.gm-style {
+    > div > div > div > div > div > div > div > div > div,
+    > div > div:nth-child(3) > div:first-child > div:last-child > div > div:first-child > div:last-child {
+        background-color: darken($yellow, 10%) !important;
+    }
+    > div > div:nth-child(3) > div:first-child > div:last-child > div {
+        margin-top: 5px;
+        animation: popIn .15s ease-in-out;
+        transform-origin: bottom center;
+        pointer-events: none;
+        button, .btn {
+            pointer-events: all;
+        }
+    }
+    .gm-style-iw {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative !important;
+        top: auto !important;
+        left: 0 !important;
+        bottom: -10px;
+        width: 100% !important;
+        min-height: 36px;
+        padding: 10px 0;
+        font-family: $heading-font;
+        overflow: visible;
+        text-align: center;
+        > div,
+        > div > div {
+            overflow: visible !important;
+        }
+        .title {
+            display: block;
+            margin-bottom: 0.2em;
+            padding-top: 0.2em;
+            padding-right: 10px;
+            font-size: 1.4em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: darken($yellow, 35%);
+        }
+        .location {
+            display: block;
+            padding: 0 5%;
+            margin-bottom: 1em;
+            font-family: $body-font;
+            font-weight: 500;
+            line-height: 1.2;
+            color: darken($yellow, 35%);
+            white-space: nowrap;
+        }
     }
 }
 
@@ -509,7 +579,7 @@ select.form-control {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: $pad 40px $pad - 20px;
+    padding: $pad 5% $pad - 20px;
     background: #0A0A0A;
     z-index: 1;
     @media (max-width: 500px) {
@@ -521,22 +591,8 @@ select.form-control {
         margin-bottom: 40px;
     }
     .view-all {
-        @extend %link;
-        @media (min-width: 551px) {
-            position: absolute;
-            top: 90px;
-            right: 40px;
-        }
-        @media (max-width: 550px) {
-            margin: -35px 0 40px;
-        }
-        color: #FFF;
-        &:hover {
-            color: $pink;
-        }
-        &:active {
-            color: $purple;
-        }
+        @extend %hover-link;
+        margin-top: 20px;
     }
     .attraction {
         margin-bottom: 20px;
@@ -549,10 +605,23 @@ select.form-control {
         @media (max-width: 500px) {
             flex-basis: 100%;
         }
+        .img-wrapper {
+            display: block;
+            margin-bottom: 30px;
+        }
         img {
             display: block;
             width: 100%;
-            margin-bottom: 30px;
+        }
+        h3 a, p a {
+            @extend %link;
+            color: #FFF;
+            &:hover {
+                color: $pink;
+            }
+            &:active {
+                color: $purple;
+            }
         }
     }
 }
@@ -763,6 +832,16 @@ select.form-control {
         transform: rotateX(90deg);
     }
 }
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 
 /* --- TYPOGRAPHY --- */
 @media (min-width: 30em) {
@@ -784,6 +863,9 @@ select.form-control {
 @media (min-width: 901px) {
 }
 @media (max-width: 900px) {
+    .map-container h2 {
+        top: 60px;
+    }
 }
 
 /* --- MOBILE LAYOUT ---- */

@@ -5,7 +5,7 @@
     z-index: 1;
 	header {
         display: flex;
-        padding: 40px;
+        padding: 40px 5%;
         background: darken($purple, 10%);
         color: $yellow;
 		align-items: center;
@@ -150,6 +150,8 @@
 @media (min-width: 1281px) {
     .header header {
         margin: 0 -40px;
+        padding-left: calc(5% + 40px);
+        padding-right: calc(5% + 40px);
     }
 }
 
@@ -157,7 +159,7 @@
 	.header {
 		header {
 			flex-direction: column;
-			padding: $mobile-pad/2 15px;
+			padding: $mobile-pad/2 5%;
 		}
 		.logo {
             min-width: 0;
