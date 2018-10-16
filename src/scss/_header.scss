@@ -152,6 +152,20 @@
         margin: 0 -40px;
         padding-left: calc(5% + 40px);
         padding-right: calc(5% + 40px);
+        &::before, &::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            border-top: 15px solid darken($purple, 15%);
+        }
+        &::before {
+            left: -40px;
+            border-left: 40px solid transparent;
+        }
+        &::after {
+            right: -40px;
+            border-right: 40px solid transparent;
+        }
     }
 }
 

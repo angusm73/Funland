@@ -118,6 +118,20 @@
             margin: 0 -40px;
             padding-left: calc(5% + 40px);
             padding-right: calc(5% + 40px);
+            &::before, &::after {
+                content: '';
+                position: absolute;
+                bottom: 100%;
+                border-bottom: 15px solid darken($purple, 15%);
+            }
+            &::before {
+                left: -40px;
+                border-left: 40px solid transparent;
+            }
+            &::after {
+                right: -40px;
+                border-right: 40px solid transparent;
+            }
         }
         .logo > a {
             margin-right: 60px;
@@ -139,7 +153,7 @@
 @media (min-width: 721px) {
     .footer {
         .footer-main {
-            margin-left: -$pad/4;
+            margin-left: -$pad/6;
             width: 55%;
             padding-right: 30px;
         }

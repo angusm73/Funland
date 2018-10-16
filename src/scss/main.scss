@@ -478,7 +478,13 @@ select.form-control {
             box-shadow: 5px 5px 30px darken($cyan, 20%);
         }
     }
-    @media (min-width: 741px) {
+    @media (min-width: 741px) and (max-width: 900px) {
+        .text {
+            padding: 0 $pad/4;
+        }
+        .actions {
+            flex-basis: 20%;
+        }
     }
     @media (max-width: 740px) {
         flex-direction: column;
@@ -523,6 +529,14 @@ select.form-control {
     > div > div:nth-child(3) > div:first-child > div:last-child > div > div:first-child > div:last-child {
         background-color: darken($yellow, 10%) !important;
     }
+    > div > div:nth-child(3) > div:first-child > div:last-child > div > div:first-child {
+        > div:first-child, > div:nth-child(3) {
+            left: 0!important;
+            top: 65px!important;
+            transform: rotate(90deg);
+            transform-origin: left top;
+        }
+    }
     > div > div:nth-child(3) > div:first-child > div:last-child > div {
         margin-top: 5px;
         animation: popIn .15s ease-in-out;
@@ -542,10 +556,10 @@ select.form-control {
         bottom: -10px;
         width: 100% !important;
         min-height: 36px;
-        padding: 10px 0;
+        padding: 20px 0;
         font-family: $heading-font;
         overflow: visible;
-        text-align: center;
+        text-align: left;
         > div,
         > div > div {
             overflow: visible !important;
@@ -562,8 +576,7 @@ select.form-control {
         }
         .location {
             display: block;
-            padding: 0 5%;
-            margin-bottom: 1em;
+            margin-bottom: 0.8em;
             font-family: $body-font;
             font-weight: 500;
             line-height: 1.2;
@@ -592,18 +605,11 @@ select.form-control {
     }
     .view-all {
         @extend %hover-link;
-        margin-top: 20px;
+        margin-top: 40px;
     }
     .attraction {
-        margin-bottom: 20px;
-        @media (min-width: 901px) {
-            flex-basis: 22%;
-        }
-        @media (min-width: 501px) and (max-width: 900px) {
-            flex-basis: 47%;
-        }
-        @media (max-width: 500px) {
-            flex-basis: 100%;
+        &:last-of-type {
+            margin-bottom: 0;
         }
         .img-wrapper {
             display: block;
@@ -621,6 +627,20 @@ select.form-control {
             }
             &:active {
                 color: $purple;
+            }
+        }
+        @media (min-width: 901px) {
+            flex-basis: 22%;
+        }
+        @media (min-width: 501px) and (max-width: 900px) {
+            flex-basis: 47%;
+            margin-bottom: 50px;
+        }
+        @media (max-width: 500px) {
+            flex-basis: 100%;
+            margin-bottom: 40px;
+            .img-wrapper {
+                margin-bottom: 20px;
             }
         }
     }
