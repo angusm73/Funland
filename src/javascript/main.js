@@ -218,6 +218,7 @@ class FrontEnd {
     startHeroTimer() {
         this.stopHeroTimer()
         this.slide_counter = 0
+        this.active = true
         this.timer = setInterval(() => {
             this.showHeroSlide(this.slide_counter % this.hero_items.length)
             this.slide_counter++
@@ -226,6 +227,7 @@ class FrontEnd {
 
     stopHeroTimer() {
         clearTimeout(this.timer)
+        this.active = false
     }
 
     showHeroSlide(index) {
@@ -246,6 +248,9 @@ class FrontEnd {
     }
 
     shootLaser() {
+        if (!this.active) {
+            return
+        }
         const nob = document.getElementById('nob')
         const nob_offset = nob.getBoundingClientRect()
         let laser = document.querySelector('.laser-glow')

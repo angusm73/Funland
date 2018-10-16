@@ -231,6 +231,7 @@ var FrontEnd = function () {
 
             this.stopHeroTimer();
             this.slide_counter = 0;
+            this.active = true;
             this.timer = setInterval(function () {
                 _this4.showHeroSlide(_this4.slide_counter % _this4.hero_items.length);
                 _this4.slide_counter++;
@@ -240,6 +241,7 @@ var FrontEnd = function () {
         key: 'stopHeroTimer',
         value: function stopHeroTimer() {
             clearTimeout(this.timer);
+            this.active = false;
         }
     }, {
         key: 'showHeroSlide',
@@ -264,6 +266,9 @@ var FrontEnd = function () {
     }, {
         key: 'shootLaser',
         value: function shootLaser() {
+            if (!this.active) {
+                return;
+            }
             var nob = document.getElementById('nob');
             var nob_offset = nob.getBoundingClientRect();
             var laser = document.querySelector('.laser-glow');
