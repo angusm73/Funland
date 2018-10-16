@@ -51,13 +51,16 @@ class Game {
 		this.renderScore()
 
 		// Move enemies left & right
-		let count = -15
-		let move_distance = 0.2
-		this.game_timer = setInterval(() => {
-			if (count % 30 == 0) {
+		let count = -50
+		let move_distance = 0.02
+		let game_loop = () => {
+			if (this.stopped) {
+				return
+			}
+			if (count % 100 == 0) {
 				move_distance *= -1
-				if (count < 300) {
-					this.gameobjects.map(i => i.y += 5)
+				if (count < 1400) {
+					this.gameobjects.map(i => i.y += 3)
 				}
 			}
 			this.gameobjects.map(i => i.x += move_distance)
@@ -66,7 +69,13 @@ class Game {
 				this.winScreen()
 			}
 			count++
-		}, 150)
+		}
+		let start = () => {
+			game_loop()
+			this.stopped = false
+			this.game_timer_id = requestAnimationFrame(start)
+		}
+		start()
 
 		this.background.classList.add('active')
 		this.background.tabIndex = -1
@@ -77,7 +86,8 @@ class Game {
 
 	stopGame() {
 		clearTimeout(this.start_timer)
-		clearInterval(this.game_timer)
+		cancelAnimationFrame(this.game_timer_id)
+		this.stopped = true
 		this.gameobjects.map(o => o.destroy())
 		this.gameobjects = []
 		if (this.player) {
@@ -218,6 +228,8 @@ class GameObject {
 				this.width /= 2
 			} else if (shape == 'bubbles') {
 				this.width *= 3
+			} else if (shape == 'square') {
+				this.width *= 2
 			}
 		}, 10)
 	}

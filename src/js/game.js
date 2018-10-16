@@ -71,14 +71,17 @@ var Game = function () {
 			this.renderScore();
 
 			// Move enemies left & right
-			var count = -15;
-			var move_distance = 0.2;
-			this.game_timer = setInterval(function () {
-				if (count % 30 == 0) {
+			var count = -50;
+			var move_distance = 0.02;
+			var game_loop = function game_loop() {
+				if (_this2.stopped) {
+					return;
+				}
+				if (count % 100 == 0) {
 					move_distance *= -1;
-					if (count < 300) {
+					if (count < 1400) {
 						_this2.gameobjects.map(function (i) {
-							return i.y += 5;
+							return i.y += 3;
 						});
 					}
 				}
@@ -92,7 +95,13 @@ var Game = function () {
 					_this2.winScreen();
 				}
 				count++;
-			}, 150);
+			};
+			var start = function start() {
+				game_loop();
+				_this2.stopped = false;
+				_this2.game_timer_id = requestAnimationFrame(start);
+			};
+			start();
 
 			this.background.classList.add('active');
 			this.background.tabIndex = -1;
@@ -104,7 +113,8 @@ var Game = function () {
 		key: 'stopGame',
 		value: function stopGame() {
 			clearTimeout(this.start_timer);
-			clearInterval(this.game_timer);
+			cancelAnimationFrame(this.game_timer_id);
+			this.stopped = true;
 			this.gameobjects.map(function (o) {
 				return o.destroy();
 			});
@@ -271,6 +281,8 @@ var GameObject = function () {
 				_this5.width /= 2;
 			} else if (shape == 'bubbles') {
 				_this5.width *= 3;
+			} else if (shape == 'square') {
+				_this5.width *= 2;
 			}
 		}, 10);
 	}
