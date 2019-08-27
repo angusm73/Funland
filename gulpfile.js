@@ -5,17 +5,13 @@ var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 
-var autoprefixerOptions = {
-    browsers: ['last 2 versions']
-};
-
 // Static Server + watching scss/html files
 gulp.task('serve', function () {
     browserSync.init({
         proxy: "127.0.0.1:8080"
     });
-    gulp.watch("./src/javascript/**/*.js", ['js']);
-    gulp.watch("./src/scss/**/*.scss", ['sass']);
+    gulp.watch("./src/javascript/**/*.js", gulp.series('js'));
+    gulp.watch("./src/scss/**/*.scss", gulp.series('sass'));
     gulp.watch("./src/**/*.html").on('change', browserSync.reload);
     gulp.watch("./src/**/*.php").on('change', browserSync.reload);
 });
@@ -24,8 +20,8 @@ gulp.task('serve', function () {
 gulp.task('sass', function () {
     return gulp.src("src/scss/*.scss")
         // .pipe(sourcemaps.init())
-        .pipe(autoprefixer(autoprefixerOptions))
         .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
+        .pipe(autoprefixer())
         // .pipe(sourcemaps.write('maps', {
         // 	includeContent: false,
         // 	sourceRoot: 'source'
@@ -41,12 +37,10 @@ gulp.task('js', function () {
         .pipe(gulp.dest('src/js/libs/maps/'));
     return gulp.src('src/javascript/*.js')
         .pipe(sourcemaps.init())
-        .pipe(babel({
-            presets: ['env']
-        }))
+        .pipe(babel())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('src/js'))
         .pipe(browserSync.stream());
 });
 
-gulp.task('default', ['sass', 'js', 'serve']);
+gulp.task('default', gulp.series('sass', 'js', 'serve'));

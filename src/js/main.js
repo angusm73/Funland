@@ -1,297 +1,416 @@
-'use strict';
+class FrontEnd {
+  constructor() {
+    // this.initModal()
+    // this.initModalForm()
+    this.initMusic();
+    this.initHero();
+    document.addEventListener("touchstart", function () {}, false);
+  }
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  initModal() {
+    const overlay = document.querySelector('.overlay');
+    const modal = document.querySelector('.modal');
+    const close_btn = document.querySelector('.modal .close');
+    const buttons = document.querySelectorAll('.join-now');
+    let open_modal = null;
+    this.modal = {
+      open: function (modal_class) {
+        overlay.classList.add('show');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+        if (modal_class) {
+          document.querySelector(modal_class).style.display = 'block';
+          open_modal = modal_class;
+        } else {
+          modal.style.display = 'block';
+        }
+      },
+      close: function (modal_class) {
+        overlay.classList.remove('show');
 
-var FrontEnd = function () {
-    function FrontEnd() {
-        _classCallCheck(this, FrontEnd);
+        if (modal_class) {
+          document.querySelector(modal_class).style.display = 'none';
+          open_modal = null;
+        } else {
+          modal.style.display = 'none';
+        }
+      }
+      /* Modal events */
 
-        // this.initModal()
-        // this.initModalForm()
-        this.initMusic();
-        this.initHero();
+    };
+    close_btn.addEventListener('click', e => {
+      this.modal.close(open_modal);
+      e.preventDefault();
+    });
+    overlay.addEventListener('click', e => {
+      this.modal.close(open_modal);
+    });
+    document.addEventListener('keydown', e => {
+      const kc = e.keyCode ? e.keyCode : e.which;
 
-        document.addEventListener("touchstart", function () {}, false);
+      if (kc == 27) {
+        this.modal.close(open_modal);
+      }
+    });
+
+    if (buttons.length) {
+      buttons.forEach(button => {
+        button.addEventListener('click', e => {
+          this.modal.open();
+          e.preventDefault();
+        });
+      });
+    }
+  }
+
+  initModalForm() {
+    const csrf_token = document.querySelector('meta[name=csrf-token]');
+    const form = document.querySelector('.modal form');
+    const loader = form.querySelector('.loader');
+    const button = form.querySelector('.btn');
+    const results = form.querySelector('.results');
+
+    if (form.length) {
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        button.classList.add('disabled');
+        loader.classList.add('show');
+        results.innerHTML = '';
+        let data = new FormData();
+
+        for (let i = 0; i < form.length; i++) {
+          const input = form[i];
+
+          if (input.name) {
+            data.set(input.name, input.value);
+          }
+        }
+
+        axios({
+          method: 'post',
+          url: form.action,
+          data: data,
+          headers: {
+            'x-requested-with': 'XMLHttpRequest',
+            'x-csrf-token': csrf_token.content,
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(res => {
+          loader.classList.remove('show');
+          button.classList.remove('disabled');
+          results.innerHTML = '<p>' + res.data + '</p>';
+        }).catch(err => console.error(err));
+      });
+    }
+  }
+
+  initMusic() {
+    const cheeky = document.getElementById('cheeky-tune');
+    const play_btn = document.querySelector('.audio-controls .play');
+    play_btn.addEventListener('click', () => {
+      if (cheeky.paused) {
+        cheeky.play();
+      } else {
+        cheeky.pause();
+      }
+    });
+    cheeky.addEventListener('play', () => {
+      play_btn.innerHTML = '| |';
+    });
+    cheeky.addEventListener('pause', () => {
+      play_btn.innerHTML = '&#9658;';
+    });
+  }
+
+  initMap() {
+    if (!document.getElementById('map')) {
+      return;
     }
 
-    _createClass(FrontEnd, [{
-        key: 'initModal',
-        value: function initModal() {
-            var _this = this;
+    const marker_bg = {
+      url: '/img/home/map-marker.png',
+      labelOrigin: {
+        x: 70,
+        y: 152
+      },
+      scaledSize: new google.maps.Size(24, 48) // const map_style = [{ "elementType": "geometry", "stylers": [{ "color": "#073532" }] }, { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }, { "visibility": "simplified" }] }, { "elementType": "labels.text.stroke", "stylers": [{ "color": "#ABF2EC" }] }, { "featureType": "administrative.land_parcel", "elementType": "labels.text.fill", "stylers": [{ "color": "#bdbdbd" }] }, { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#073532" }, { "visibility": "simplified" }] }, { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#073532" }] }, { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#0a4944" }, { "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }, { "visibility": "simplified" }] }, { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#0a4944" }] }, { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] }, { "featureType": "road.local", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "transit.line", "elementType": "geometry", "stylers": [{ "color": "#052724" }] }, { "featureType": "transit.station", "elementType": "geometry", "stylers": [{ "color": "#073532" }] }, { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#15A095" }] }, { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }]
 
-            var overlay = document.querySelector('.overlay');
-            var modal = document.querySelector('.modal');
-            var close_btn = document.querySelector('.modal .close');
-            var buttons = document.querySelectorAll('.join-now');
-            var open_modal = null;
+    };
+    const map_style = [{
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#2a0a2e"
+      }]
+    }, {
+      "elementType": "labels.icon",
+      "stylers": [{
+        "visibility": "off"
+      }]
+    }, {
+      "elementType": "labels.text.fill",
+      "stylers": [{
+        "color": "#616161"
+      }, {
+        "visibility": "simplified"
+      }]
+    }, {
+      "elementType": "labels.text.stroke",
+      "stylers": [{
+        "color": "#b885c5"
+      }]
+    }, {
+      "featureType": "administrative.land_parcel",
+      "elementType": "labels.text.fill",
+      "stylers": [{
+        "color": "#bdbdbd"
+      }]
+    }, {
+      "featureType": "poi",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#2a0a2e"
+      }, {
+        "visibility": "simplified"
+      }]
+    }, {
+      "featureType": "poi",
+      "elementType": "labels.text.fill",
+      "stylers": [{
+        "color": "#757575"
+      }]
+    }, {
+      "featureType": "poi.park",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#2a0a2e"
+      }]
+    }, {
+      "featureType": "poi.park",
+      "elementType": "labels.text.fill",
+      "stylers": [{
+        "color": "#9e9e9e"
+      }]
+    }, {
+      "featureType": "road",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#501458"
+      }, {
+        "visibility": "simplified"
+      }]
+    }, {
+      "featureType": "road.arterial",
+      "elementType": "labels.text.fill",
+      "stylers": [{
+        "color": "#757575"
+      }, {
+        "visibility": "simplified"
+      }]
+    }, {
+      "featureType": "road.highway",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#6c1a78"
+      }]
+    }, {
+      "featureType": "road.highway",
+      "elementType": "labels.text.fill",
+      "stylers": [{
+        "color": "#616161"
+      }]
+    }, {
+      "featureType": "road.local",
+      "elementType": "labels.text.fill",
+      "stylers": [{
+        "color": "#9e9e9e"
+      }]
+    }, {
+      "featureType": "transit.line",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#501458"
+      }]
+    }, {
+      "featureType": "transit.station",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#501458"
+      }]
+    }, {
+      "featureType": "water",
+      "elementType": "geometry",
+      "stylers": [{
+        "color": "#501458"
+      }]
+    }, {
+      "featureType": "water",
+      "elementType": "labels.text.fill",
+      "stylers": [{
+        "color": "#9e9e9e"
+      }]
+    }];
+    const infowindow = new google.maps.InfoWindow({
+      pixelOffset: new google.maps.Size(140, 100)
+    });
+    this.map = new google.maps.Map(document.getElementById('map'), {
+      center: {
+        lat: -33.182211,
+        lng: 150.474110
+      },
+      zoom: 7.2,
+      styles: map_style,
+      disableDefaultUI: true
+    });
+    this.markers = [{
+      title: 'Ulladulla',
+      location: 'Princes Highway,\n Ulladulla NSW 2539',
+      position: {
+        lat: -35.357570,
+        lng: 150.473500
+      }
+    }, {
+      title: 'Bankstown',
+      location: 'Street Name,\n Bankstown NSW 2539',
+      position: {
+        lat: -33.913160,
+        lng: 151.034670
+      }
+    }, {
+      title: 'Lidcombe',
+      location: 'Street Name,\n Lidcombe NSW 2539',
+      position: {
+        lat: -33.864690,
+        lng: 151.043630
+      }
+    }, {
+      title: 'Jervis Bay',
+      location: 'Street Name,\n Jervis Bay NSW 2539',
+      position: {
+        lat: -35.140020,
+        lng: 150.728240
+      }
+    }, {
+      title: 'Mt Prichard',
+      location: 'Street Name,\n Mt Prichard NSW 2539',
+      position: {
+        lat: -33.902250,
+        lng: 150.896850
+      }
+    }, {
+      title: 'Port Maquarie',
+      location: 'Street Name,\n Port Maquarie NSW 2539',
+      position: {
+        lat: -31.430700,
+        lng: 152.906330
+      }
+    }].map(location => {
+      let marker = new google.maps.Marker({
+        map: this.map,
+        title: location.title,
+        position: location.position,
+        icon: marker_bg
+      });
+      marker.addListener('mouseover', () => {
+        if (this.last_open_location != location.title) {
+          infowindow.setContent('<span class="title">' + location.title + '</span><p class="location">' + location.location.replace(/\n/g, '<br>') + '</p><a href="/locations/' + location.title.toLowerCase().replace(/ +/g, '') + '" class="btn small">View More</a>');
+          infowindow.open(this.map, marker);
+        }
 
-            this.modal = {
-                open: function open(modal_class) {
-                    overlay.classList.add('show');
-                    if (modal_class) {
-                        document.querySelector(modal_class).style.display = 'block';
-                        open_modal = modal_class;
-                    } else {
-                        modal.style.display = 'block';
-                    }
-                },
-                close: function close(modal_class) {
-                    overlay.classList.remove('show');
-                    if (modal_class) {
-                        document.querySelector(modal_class).style.display = 'none';
-                        open_modal = null;
-                    } else {
-                        modal.style.display = 'none';
-                    }
-                }
+        this.last_open_location = location.title;
+      });
+      return marker;
+    });
+    this.marker_cluster = new MarkerClusterer(this.map, this.markers, {
+      gridSize: 20,
+      imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+    });
+  }
 
-                /* Modal events */
-            };close_btn.addEventListener('click', function (e) {
-                _this.modal.close(open_modal);
-                e.preventDefault();
-            });
-            overlay.addEventListener('click', function (e) {
-                _this.modal.close(open_modal);
-            });
-            document.addEventListener('keydown', function (e) {
-                var kc = e.keyCode ? e.keyCode : e.which;
-                if (kc == 27) {
-                    _this.modal.close(open_modal);
-                }
-            });
-            if (buttons.length) {
-                buttons.forEach(function (button) {
-                    button.addEventListener('click', function (e) {
-                        _this.modal.open();
-                        e.preventDefault();
-                    });
-                });
-            }
-        }
-    }, {
-        key: 'initModalForm',
-        value: function initModalForm() {
-            var csrf_token = document.querySelector('meta[name=csrf-token]');
-            var form = document.querySelector('.modal form');
-            var loader = form.querySelector('.loader');
-            var button = form.querySelector('.btn');
-            var results = form.querySelector('.results');
-            if (form.length) {
-                form.addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    button.classList.add('disabled');
-                    loader.classList.add('show');
-                    results.innerHTML = '';
-                    var data = new FormData();
-                    for (var i = 0; i < form.length; i++) {
-                        var input = form[i];
-                        if (input.name) {
-                            data.set(input.name, input.value);
-                        }
-                    }
-                    axios({
-                        method: 'post',
-                        url: form.action,
-                        data: data,
-                        headers: {
-                            'x-requested-with': 'XMLHttpRequest',
-                            'x-csrf-token': csrf_token.content,
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }).then(function (res) {
-                        loader.classList.remove('show');
-                        button.classList.remove('disabled');
-                        results.innerHTML = '<p>' + res.data + '</p>';
-                    }).catch(function (err) {
-                        return console.error(err);
-                    });
-                });
-            }
-        }
-    }, {
-        key: 'initMusic',
-        value: function initMusic() {
-            var cheeky = document.getElementById('cheeky-tune');
-            var play_btn = document.querySelector('.audio-controls .play');
-            play_btn.addEventListener('click', function () {
-                if (cheeky.paused) {
-                    cheeky.play();
-                } else {
-                    cheeky.pause();
-                }
-            });
-            cheeky.addEventListener('play', function () {
-                play_btn.innerHTML = '| |';
-            });
-            cheeky.addEventListener('pause', function () {
-                play_btn.innerHTML = '&#9658;';
-            });
-        }
-    }, {
-        key: 'initMap',
-        value: function initMap() {
-            var _this2 = this;
+  initHero() {
+    this.hero_items = Array.from(document.querySelectorAll('.hero [data-item]')).map((i, x) => {
+      return {
+        label: i,
+        item: document.querySelector('.hero .' + i.getAttribute('data-item'))
+      };
+    });
+    this.hero_items.map((i, x) => {
+      i.label.addEventListener('mouseenter', () => {
+        this.stopHeroTimer();
+        this.showHeroSlide(x);
+        this.slide_counter = x + 1;
+      });
+      i.label.addEventListener('touchstart', () => {
+        this.stopHeroTimer();
+        this.showHeroSlide(x);
+        this.slide_counter = x + 1;
+        setTimeout(this.startHeroTimer.bind(this), 2000);
+      });
+      i.label.addEventListener('mouseleave', this.startHeroTimer.bind(this));
+    });
+    this.startHeroTimer();
+  }
 
-            if (!document.getElementById('map')) {
-                return;
-            }
-            var marker_bg = {
-                url: '/img/home/map-marker.png',
-                labelOrigin: { x: 70, y: 152 },
-                scaledSize: new google.maps.Size(24, 48)
-                // const map_style = [{ "elementType": "geometry", "stylers": [{ "color": "#073532" }] }, { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }, { "visibility": "simplified" }] }, { "elementType": "labels.text.stroke", "stylers": [{ "color": "#ABF2EC" }] }, { "featureType": "administrative.land_parcel", "elementType": "labels.text.fill", "stylers": [{ "color": "#bdbdbd" }] }, { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#073532" }, { "visibility": "simplified" }] }, { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#073532" }] }, { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#0a4944" }, { "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }, { "visibility": "simplified" }] }, { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#0a4944" }] }, { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] }, { "featureType": "road.local", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "transit.line", "elementType": "geometry", "stylers": [{ "color": "#052724" }] }, { "featureType": "transit.station", "elementType": "geometry", "stylers": [{ "color": "#073532" }] }, { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#15A095" }] }, { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }]
-            };var map_style = [{ "elementType": "geometry", "stylers": [{ "color": "#2a0a2e" }] }, { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }, { "visibility": "simplified" }] }, { "elementType": "labels.text.stroke", "stylers": [{ "color": "#b885c5" }] }, { "featureType": "administrative.land_parcel", "elementType": "labels.text.fill", "stylers": [{ "color": "#bdbdbd" }] }, { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#2a0a2e" }, { "visibility": "simplified" }] }, { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#2a0a2e" }] }, { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#501458" }, { "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }, { "visibility": "simplified" }] }, { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#6c1a78" }] }, { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] }, { "featureType": "road.local", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }, { "featureType": "transit.line", "elementType": "geometry", "stylers": [{ "color": "#501458" }] }, { "featureType": "transit.station", "elementType": "geometry", "stylers": [{ "color": "#501458" }] }, { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#501458" }] }, { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }];
-            var infowindow = new google.maps.InfoWindow({
-                pixelOffset: new google.maps.Size(140, 100)
-            });
-            this.map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: -33.182211, lng: 150.474110 },
-                zoom: 7.2,
-                styles: map_style,
-                disableDefaultUI: true
-            });
-            this.markers = [{
-                title: 'Ulladulla',
-                location: 'Princes Highway,\n Ulladulla NSW 2539',
-                position: { lat: -35.357570, lng: 150.473500 }
-            }, {
-                title: 'Bankstown',
-                location: 'Street Name,\n Bankstown NSW 2539',
-                position: { lat: -33.913160, lng: 151.034670 }
-            }, {
-                title: 'Lidcombe',
-                location: 'Street Name,\n Lidcombe NSW 2539',
-                position: { lat: -33.864690, lng: 151.043630 }
-            }, {
-                title: 'Jervis Bay',
-                location: 'Street Name,\n Jervis Bay NSW 2539',
-                position: { lat: -35.140020, lng: 150.728240 }
-            }, {
-                title: 'Mt Prichard',
-                location: 'Street Name,\n Mt Prichard NSW 2539',
-                position: { lat: -33.902250, lng: 150.896850 }
-            }, {
-                title: 'Port Maquarie',
-                location: 'Street Name,\n Port Maquarie NSW 2539',
-                position: { lat: -31.430700, lng: 152.906330 }
-            }].map(function (location) {
-                var marker = new google.maps.Marker({
-                    map: _this2.map,
-                    title: location.title,
-                    position: location.position,
-                    icon: marker_bg
-                });
-                marker.addListener('mouseover', function () {
-                    if (_this2.last_open_location != location.title) {
-                        infowindow.setContent('<span class="title">' + location.title + '</span><p class="location">' + location.location.replace(/\n/g, '<br>') + '</p><a href="/locations/' + location.title.toLowerCase().replace(/ +/g, '') + '" class="btn small">View More</a>');
-                        infowindow.open(_this2.map, marker);
-                    }
-                    _this2.last_open_location = location.title;
-                });
-                return marker;
-            });
-            this.marker_cluster = new MarkerClusterer(this.map, this.markers, {
-                gridSize: 20,
-                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-            });
-        }
-    }, {
-        key: 'initHero',
-        value: function initHero() {
-            var _this3 = this;
+  startHeroTimer() {
+    this.stopHeroTimer();
+    this.slide_counter = 0;
+    this.active = true;
+    this.timer = setInterval(() => {
+      this.showHeroSlide(this.slide_counter % this.hero_items.length);
+      this.slide_counter++;
+    }, 4000);
+  }
 
-            this.hero_items = Array.from(document.querySelectorAll('.hero [data-item]')).map(function (i, x) {
-                return {
-                    label: i,
-                    item: document.querySelector('.hero .' + i.getAttribute('data-item'))
-                };
-            });
-            this.hero_items.map(function (i, x) {
-                i.label.addEventListener('mouseenter', function () {
-                    _this3.stopHeroTimer();
-                    _this3.showHeroSlide(x);
-                    _this3.slide_counter = x + 1;
-                });
-                i.label.addEventListener('touchstart', function () {
-                    _this3.stopHeroTimer();
-                    _this3.showHeroSlide(x);
-                    _this3.slide_counter = x + 1;
-                    setTimeout(_this3.startHeroTimer.bind(_this3), 2000);
-                });
-                i.label.addEventListener('mouseleave', _this3.startHeroTimer.bind(_this3));
-            });
-            this.startHeroTimer();
-        }
-    }, {
-        key: 'startHeroTimer',
-        value: function startHeroTimer() {
-            var _this4 = this;
+  stopHeroTimer() {
+    clearTimeout(this.timer);
+    this.active = false;
+  }
 
-            this.stopHeroTimer();
-            this.slide_counter = 0;
-            this.active = true;
-            this.timer = setInterval(function () {
-                _this4.showHeroSlide(_this4.slide_counter % _this4.hero_items.length);
-                _this4.slide_counter++;
-            }, 4000);
-        }
-    }, {
-        key: 'stopHeroTimer',
-        value: function stopHeroTimer() {
-            clearTimeout(this.timer);
-            this.active = false;
-        }
-    }, {
-        key: 'showHeroSlide',
-        value: function showHeroSlide(index) {
-            var _this5 = this;
+  showHeroSlide(index) {
+    this.hero_items.forEach(item => {
+      const active = item.item == this.hero_items[index].item;
+      item.item.style.display = active ? 'block' : 'none';
 
-            this.hero_items.forEach(function (item) {
-                var active = item.item == _this5.hero_items[index].item;
-                item.item.style.display = active ? 'block' : 'none';
-                if (active) {
-                    item.label.classList.add('active');
-                    if (item.item.classList.contains('laser-gun')) {
-                        setTimeout(_this5.shootLaser, 360);
-                    } else {
-                        _this5.killLaser();
-                    }
-                } else {
-                    item.label.classList.remove('active');
-                }
-            });
-        }
-    }, {
-        key: 'shootLaser',
-        value: function shootLaser() {
-            if (!this.active) {
-                return;
-            }
-            var nob = document.getElementById('nob');
-            var nob_offset = nob.getBoundingClientRect();
-            var laser = document.querySelector('.laser-glow');
-            if (!laser) {
-                laser = document.createElement('span');
-                laser.classList.add('laser-glow');
-                document.body.appendChild(laser);
-            }
-            laser.style.top = nob_offset.top + window.scrollY + 15 + 'px';
-            laser.style.left = nob_offset.left + window.scrollX + 15 + 'px';
-        }
-    }, {
-        key: 'killLaser',
-        value: function killLaser() {
-            var laser = document.querySelector('.laser-glow');
-            if (laser) {
-                laser.parentNode.removeChild(laser);
-            }
-        }
-    }]);
+      if (active) {
+        item.label.classList.add('active');
 
-    return FrontEnd;
-}();
+        if (item.item.classList.contains('laser-gun')) {
+          setTimeout(this.shootLaser, 360);
+        } else {
+          this.killLaser();
+        }
+      } else {
+        item.label.classList.remove('active');
+      }
+    });
+  }
+
+  shootLaser() {
+    if (!this.active) {
+      return;
+    }
+
+    const nob = document.getElementById('nob');
+    const nob_offset = nob.getBoundingClientRect();
+    let laser = document.querySelector('.laser-glow');
+
+    if (!laser) {
+      laser = document.createElement('span');
+      laser.classList.add('laser-glow');
+      document.body.appendChild(laser);
+    }
+
+    laser.style.top = nob_offset.top + window.scrollY + 15 + 'px';
+    laser.style.left = nob_offset.left + window.scrollX + 15 + 'px';
+  }
+
+  killLaser() {
+    let laser = document.querySelector('.laser-glow');
+
+    if (laser) {
+      laser.parentNode.removeChild(laser);
+    }
+  }
+
+}
 
 window.front_end = new FrontEnd();
 //# sourceMappingURL=main.js.map
